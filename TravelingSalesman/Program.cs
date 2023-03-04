@@ -3,14 +3,7 @@
 using System.Xml.Serialization;
 using TravelingSalesman;
 
-XmlSerializer ser = new XmlSerializer(typeof(City));
-string filename = @"C:\Projects\TravelingSalesman\Cities\br17.xml";
-City city;
-using (Stream reader = new FileStream(filename, FileMode.Open))
-{
-    // Call the Deserialize method to restore the object's state.
-    city = (City)ser.Deserialize(reader);
-}
+City city = new City(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
 
 Graph graph = new Graph(city);
 

@@ -18,6 +18,26 @@ public class City
 
     [XmlElement("graph")]
     public GraphInstance Graph;
+
+    public City() { }
+
+    public City(string filename)
+    {
+        XmlSerializer ser = new XmlSerializer(typeof(City));
+        City city;
+        using (Stream reader = new FileStream(filename, FileMode.Open))
+        {
+            // Call the Deserialize method to restore the object's state.
+            city = (City)ser.Deserialize(reader);
+        }
+
+        Name = city.Name;
+        Source = city.Source;
+        Description = city.Description;
+        DoublePrecision = city.DoublePrecision;
+        IgnoredDigits = city.IgnoredDigits;
+        Graph = city.Graph;
+    }
 }
 
 public class GraphInstance
