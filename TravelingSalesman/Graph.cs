@@ -1,24 +1,26 @@
-﻿namespace TravelingSalesman;
+﻿using TravelingSalesman.Interfaces;
 
-public class Graph
+namespace TravelingSalesman;
+
+public class Graph : IData
 {
     private double[,] Table;
+    public int Length;
 
     public Graph(double[,] table)
     {
-        if (table.GetLength(0) != table.GetLength((1)))
-            throw new ArgumentException("Dimensions do not agree");
+        Length = table.GetLength(0);
         Table = table;
     }
 
     public Graph(City city)
     {
-        int length = city.Graph.Vertex.Count;
-        Table = new double[length, length];
+        Length = city.Graph.Vertex.Count;
+        Table = new double[Length, Length];
 
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < Length; i++)
         {
-            for (int j = 0; j < length; j++)
+            for (int j = 0; j < Length; j++)
             {
                 Table[i, j] = city.Graph.Vertex[i].Edge[j].Cost;
             }
@@ -45,5 +47,23 @@ public class Graph
         }
 
         return length;
+    }
+
+    public double GetCycleLength(int[] path)
+    {
+        double length = 0;
+
+        for (int i = 1; i < Table.GetLength(0); i++)
+        {
+            length += GetDistance(path[i - 1], path[i]);
+        }
+        length += GetDistance(path[^1], path[0]);
+
+        return length;
+    }
+
+    public double GetFitness(IChromosome chromosome)
+    {
+        return GetCycleLength(chromosome.Genomes);
     }
 }
