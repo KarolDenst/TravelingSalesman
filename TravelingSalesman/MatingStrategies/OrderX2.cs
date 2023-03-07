@@ -1,0 +1,22 @@
+﻿using TravelingSalesman.Chromosomes;
+
+namespace TravelingSalesman.MatingStrategies
+{
+    internal class OrderX2 : IMatingStrategy
+    {
+        public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
+        {
+            Random rand = new();
+            int start = rand.Next(parent1.Genomes.Length);
+            int end = rand.Next(parent1.Genomes.Length);
+            if (start > end) (start, end) = (end, start);
+
+            return CrossoverOperators.OX2SingleOffspring(parent1, parent2, start, end - start);
+        }
+    }
+}

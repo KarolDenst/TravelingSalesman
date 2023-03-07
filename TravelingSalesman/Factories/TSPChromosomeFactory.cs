@@ -1,5 +1,5 @@
-﻿using TravelingSalesman.Factories.Interfaces;
-using TravelingSalesman.Interfaces;
+﻿using TravelingSalesman.Chromosomes;
+using TravelingSalesman.Factories.Interfaces;
 
 namespace TravelingSalesman.Factories
 {
@@ -7,7 +7,7 @@ namespace TravelingSalesman.Factories
     {
         static readonly Random Rand = new Random();
 
-        public IChromosome CreateRandomChromosome(int length)
+        public Chromosome CreateRandomChromosome(int length)
         {
             int[] chromosome = new int[length];
             for (int i = 0; i < length; i++)
@@ -15,7 +15,7 @@ namespace TravelingSalesman.Factories
                 chromosome[i] = i;
             }
 
-            return new TSPChromosome(chromosome.OrderBy(x => Rand.NextDouble()).ToArray());
+            return new Chromosome(chromosome.OrderBy(x => Rand.NextDouble()).ToArray());
         }
     }
 }

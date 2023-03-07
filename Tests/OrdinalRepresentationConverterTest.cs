@@ -1,4 +1,4 @@
-﻿using TravelingSalesman;
+﻿using TravelingSalesman.MatingStrategies;
 
 namespace Tests
 {

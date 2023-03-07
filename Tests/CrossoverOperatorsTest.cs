@@ -1,4 +1,5 @@
-using TravelingSalesman;
+using TravelingSalesman.Chromosomes;
+using TravelingSalesman.MatingStrategies;
 
 namespace Tests
 {
@@ -59,30 +60,30 @@ namespace Tests
         [MemberData(nameof(TestDataPmx))]
         public void TestPMX(int[] expected1, int[] expected2, int[] p1, int[] p2, int begin, int length)
         {
-            var (offspring1, offspring2) = CrossoverOperators.PMX(p1, p2, begin, length);
+            var (offspring1, offspring2) = CrossoverOperators.PMX(new Chromosome(p1), new Chromosome(p2), begin, length);
 
-            Assert.Equal(expected1, offspring1);
-            Assert.Equal(expected2, offspring2);
+            Assert.Equal(expected1, offspring1.Genomes);
+            Assert.Equal(expected2, offspring2.Genomes);
         }
 
         [Theory]
         [MemberData(nameof(TestDataCx))]
         public void TestCx(int[] expected1, int[] expected2, int[] p1, int[] p2)
         {
-            var (offspring1, offspring2) = CrossoverOperators.CX(p1, p2);
+            var (offspring1, offspring2) = CrossoverOperators.CX(new Chromosome(p1), new Chromosome(p2));
 
-            Assert.Equal(expected1, offspring1);
-            Assert.Equal(expected2, offspring2);
+            Assert.Equal(expected1, offspring1.Genomes);
+            Assert.Equal(expected2, offspring2.Genomes);
         }
 
         [Theory]
         [MemberData(nameof(TestDataOx))]
         public void TestOx(int[] expected1, int[] expected2, int[] p1, int[] p2, int begin, int length)
         {
-            var (offspring1, offspring2) = CrossoverOperators.OX(p1, p2, begin, length);
+            var (offspring1, offspring2) = CrossoverOperators.OX(new Chromosome(p1), new Chromosome(p2), begin, length);
 
-            Assert.Equal(expected1, offspring1);
-            Assert.Equal(expected2, offspring2);
+            Assert.Equal(expected1, offspring1.Genomes);
+            Assert.Equal(expected2, offspring2.Genomes);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TravelingSalesman
+﻿namespace TravelingSalesman.MatingStrategies
 {
     public class OrdinalRepresentaionConverter
     {

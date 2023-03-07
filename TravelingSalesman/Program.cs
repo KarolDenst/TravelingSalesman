@@ -1,7 +1,11 @@
 ﻿using TravelingSalesman;
+using TravelingSalesman.Algorithms;
+using TravelingSalesman.Data;
 using TravelingSalesman.Factories;
+using TravelingSalesman.MatingStrategies;
+using TravelingSalesman.TSPFitness;
 
-City city = new City(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
+City city = new(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
 double[,] map = new double[,] {
             { 0, 2, 9999, 12, 5 },
             { 2, 0, 4, 8, 9999 },
@@ -9,11 +13,12 @@ double[,] map = new double[,] {
             { 12, 8, 3, 0, 10 },
             { 5, 9999, 3, 10, 0 } };
 
-Graph graph = new Graph(map);
-TSPChromosomeFactory factory = new TSPChromosomeFactory();
-TSPChromosome.SetData(graph);
+Graph graph = new(map);
+TSPChromosomeFactory factory = new();
+IMatingStrategy matingStrategy = new OrderX2();
+TSPFitnessCalculator fitnessCalculator = new(graph);
 
-EvolutionaryAlgo algo = new EvolutionaryAlgo(graph.Length, 10, factory);
+EvolutionaryAlgo algo = new(graph.Length, 10, factory, matingStrategy, fitnessCalculator);
 algo.Run(50);
 
 Console.WriteLine(algo.ToString());

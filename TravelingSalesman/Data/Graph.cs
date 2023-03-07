@@ -1,10 +1,10 @@
-﻿using TravelingSalesman.Interfaces;
+﻿using TravelingSalesman.Chromosomes;
 
-namespace TravelingSalesman;
+namespace TravelingSalesman.Data;
 
 public class Graph : IData
 {
-    private double[,] Table;
+    private readonly double[,] Table;
     public int Length;
 
     public Graph(double[,] table)
@@ -62,7 +62,7 @@ public class Graph : IData
         return length;
     }
 
-    public double GetFitness(IChromosome chromosome)
+    public double GetFitness(Chromosome chromosome)
     {
         return GetCycleLength(chromosome.Genomes);
     }
