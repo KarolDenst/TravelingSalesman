@@ -27,5 +27,34 @@ namespace TravelingSalesman
 
             return chromosomes[^1];
         }
+
+        private double[] GetChances(Chromosome[] population)
+        {
+            double fitnessSum = 0;
+            foreach (var chromosome in population)
+            {
+                fitnessSum += fitnessCalculator.CalculateFitness(chromosome);
+            }
+            double[] chance = new double[population.Length];
+
+            for (int i = 0; i < population.Length; i++)
+            {
+                chance[i] = fitnessCalculator.CalculateFitness(population[i]) / fitnessSum;
+            }
+            chance[^1] = 1;
+
+            return chance;
+        }
+
+        public Chromosome DrawRandomChromosome(Chromosome[] population)
+        {
+            double[] chance = GetChances(population);
+            for (int i = 0; i < population.Length; i++)
+            {
+                if (rand.NextDouble() < chance[i]) return population[i];
+            }
+
+            return population[^1];
+        }
     }
 }

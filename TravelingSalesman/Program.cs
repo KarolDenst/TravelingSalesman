@@ -1,25 +1,30 @@
-﻿/*City city = new(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
-double[,] map = new double[,] {
-            { 0, 2, 9999, 12, 5 },
-            { 2, 0, 4, 8, 9999 },
-            { 9999, 4, 0, 3, 3 },
-            { 12, 8, 3, 0, 10 },
-            { 5, 9999, 3, 10, 0 } };
+﻿using TravelingSalesman;
+using TravelingSalesman.Algorithms;
+using TravelingSalesman.Data;
+using TravelingSalesman.Factories;
+using TravelingSalesman.Factories.Interfaces;
+using TravelingSalesman.MatingStrategies;
+using TravelingSalesman.Mutations;
+using TravelingSalesman.TSPFitness;
 
-Graph graph = new(map);
-TSPChromosomeFactory factory = new();
-IMatingStrategy matingStrategy = new OrderX2();
-TSPFitnessCalculator fitnessCalculator = new(graph);
+City br17 = new City(@"../../../../Cities/br17.xml");
+Graph graphBr17 = new Graph(br17);
 
-EvolutionaryAlgo algo = new(graph.Length, 10, factory, matingStrategy, fitnessCalculator);
-algo.Run(50);
+Random rand = new Random();
 
-Console.WriteLine(algo.ToString());
-*/
-/*Chromosome chromosome = new(new int[] { 1, 2, 3, 4, 5 });
-*//*TworsMutation twors = new TworsMutation();
-Console.WriteLine(twors.Mutate(chromosome));*//*
+IChromosomeFactory chromosomeFactory = new TSPChromosomeFactory();
+IMatingStrategy matingStrategy = new CycleX();
+IMutation mutation = new ReverseSequenceMutation(rand);
+TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graphBr17);
 
-CenterInverseMutation centerInverse = new();
-Console.WriteLine(centerInverse.Mutate(chromosome));*/
-Console.WriteLine("Hello world!");
+GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,
+    populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
+
+string logPath = @"../../../../Results/br17.txt";
+File.WriteAllText(logPath, string.Empty);
+
+geneticAlgorithm.LogPath = logPath;
+geneticAlgorithm.Run(100, -1);
+
+Console.WriteLine($"The results can be found in {Path.GetFullPath(logPath)}\n");
+

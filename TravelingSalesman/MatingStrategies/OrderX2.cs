@@ -4,6 +4,13 @@ namespace TravelingSalesman.MatingStrategies
 {
     internal class OrderX2 : IMatingStrategy
     {
+        private readonly Random rand;
+
+        public OrderX2(Random rand)
+        {
+            this.rand = rand;
+        }
+
         public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
         {
             throw new NotImplementedException();
@@ -11,7 +18,6 @@ namespace TravelingSalesman.MatingStrategies
 
         public Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
         {
-            Random rand = new();
             int start = rand.Next(parent1.Genomes.Length);
             int end = rand.Next(parent1.Genomes.Length);
             if (start > end) (start, end) = (end, start);

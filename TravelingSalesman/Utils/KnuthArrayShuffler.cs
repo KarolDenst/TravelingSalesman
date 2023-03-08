@@ -8,7 +8,7 @@
             this.rand = rand;
         }
 
-        public T[] Shuffle<T>(T[] array)
+        public virtual T[] Shuffle<T>(T[] array)
         {
             int n = array.Length;
             T[] shuffled = new T[n];

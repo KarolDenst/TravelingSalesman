@@ -18,11 +18,12 @@ namespace TravelingSalesman.Chromosomes
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append("Genomes: ");
+            sb.Append("Genomes: <");
             foreach (int genome in Genomes)
             {
                 sb.Append(genome.ToString() + " ");
             }
+            sb.Append(">");
 
             return sb.ToString();
         }
