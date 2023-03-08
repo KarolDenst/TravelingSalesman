@@ -1,8 +1,8 @@
 ﻿namespace TravelingSalesman.MatingStrategies
 {
-    public class OrdinalRepresentaionConverter
+    public class OrdinalRepresentaion
     {
-        public static int[] ToOrdinalRepresentation(int[] currentTour, int[] canonicTour)
+        public static int[] ToOrd(int[] currentTour, int[] canonicTour)
         {
             List<int> ordinalRepresentation = new();
             List<int> canonic = new(canonicTour);
@@ -15,7 +15,7 @@
             return ordinalRepresentation.ToArray();
         }
 
-        public static int[] FromOrdinalRepresentaion(int[] ordinalRepresentaation, int[] canonicTour)
+        public static int[] FromOrd(int[] ordinalRepresentaation, int[] canonicTour)
         {
             List<int> tour = new();
             List<int> canonic = new(canonicTour);

@@ -1,6 +1,6 @@
 ﻿using TravelingSalesman.MatingStrategies;
 
-namespace Tests
+namespace Tests.MatingStrategies
 {
     public class OrdinalRepresentationConverterTest
     {
@@ -24,7 +24,7 @@ namespace Tests
         [MemberData(nameof(TestDataToOrd))]
         public void TestConvertionToOrdinalRepresentation(int[] expected, int[] route, int[] canonicRoute)
         {
-            var ordinalRepresentation = OrdinalRepresentaionConverter.ToOrdinalRepresentation(route, canonicRoute);
+            var ordinalRepresentation = OrdinalRepresentaion.ToOrd(route, canonicRoute);
 
             Assert.Equal(expected, ordinalRepresentation);
         }
@@ -33,7 +33,7 @@ namespace Tests
         [MemberData(nameof(TestDataFromOrd))]
         public void TestConvertionFromOrdinalRepresentation(int[] expected, int[] ordinalRep, int[] canonicRoute)
         {
-            var route = OrdinalRepresentaionConverter.FromOrdinalRepresentaion(ordinalRep, canonicRoute);
+            var route = OrdinalRepresentaion.FromOrd(ordinalRep, canonicRoute);
 
             Assert.Equal(expected, route);
         }

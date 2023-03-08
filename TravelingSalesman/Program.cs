@@ -1,11 +1,13 @@
 ﻿using TravelingSalesman;
 using TravelingSalesman.Algorithms;
+using TravelingSalesman.Chromosomes;
 using TravelingSalesman.Data;
 using TravelingSalesman.Factories;
 using TravelingSalesman.MatingStrategies;
+using TravelingSalesman.Mutations;
 using TravelingSalesman.TSPFitness;
 
-City city = new(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
+/*City city = new(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
 double[,] map = new double[,] {
             { 0, 2, 9999, 12, 5 },
             { 2, 0, 4, 8, 9999 },
@@ -22,3 +24,11 @@ EvolutionaryAlgo algo = new(graph.Length, 10, factory, matingStrategy, fitnessCa
 algo.Run(50);
 
 Console.WriteLine(algo.ToString());
+*/
+/*Chromosome chromosome = new(new int[] { 1, 2, 3, 4, 5 });
+*//*TworsMutation twors = new TworsMutation();
+Console.WriteLine(twors.Mutate(chromosome));*//*
+
+CenterInverseMutation centerInverse = new();
+Console.WriteLine(centerInverse.Mutate(chromosome));*/
+Console.WriteLine("Hello world!");

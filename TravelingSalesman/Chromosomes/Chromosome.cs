@@ -11,10 +11,14 @@ namespace TravelingSalesman.Chromosomes
             Genomes = genomes;
         }
 
+        public static explicit operator int[](Chromosome c) => c.Genomes;
+
+        public static implicit operator Chromosome(int[] genomes) => new Chromosome(genomes);
+
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append(" Genomes: ");
+            sb.Append("Genomes: ");
             foreach (int genome in Genomes)
             {
                 sb.Append(genome.ToString() + " ");
