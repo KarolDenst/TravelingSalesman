@@ -1,13 +1,4 @@
-﻿using TravelingSalesman;
-using TravelingSalesman.Algorithms;
-using TravelingSalesman.Chromosomes;
-using TravelingSalesman.Data;
-using TravelingSalesman.Factories;
-using TravelingSalesman.MatingStrategies;
-using TravelingSalesman.Mutations;
-using TravelingSalesman.TSPFitness;
-
-/*City city = new(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
+﻿/*City city = new(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
 double[,] map = new double[,] {
             { 0, 2, 9999, 12, 5 },
             { 2, 0, 4, 8, 9999 },

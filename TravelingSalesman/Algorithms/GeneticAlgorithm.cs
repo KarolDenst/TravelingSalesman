@@ -32,12 +32,12 @@ namespace TravelingSalesman.Algorithms
             activeMatesCount = population.Length; // TODO allow for variable number of active mates
             Chromosome[] parents = new Chromosome[activeMatesCount];
             Chromosome[] updatedPopulation = new Chromosome[population.Length];
-            for(int i = 0; i < activeMatesCount; i++)
+            for (int i = 0; i < activeMatesCount; i++)
             {
                 parents[i] = chromosomeSelector.SelectForMating(population);
             }
 
-            for(int i = 0; i < activeMatesCount; i += 2)
+            for (int i = 0; i < activeMatesCount; i += 2)
             {
                 var parent1 = parents[rand.Next(activeMatesCount)];
                 var parent2 = parents[rand.Next(activeMatesCount)];

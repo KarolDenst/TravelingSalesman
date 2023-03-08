@@ -83,7 +83,7 @@ namespace TravelingSalesman.MatingStrategies
             return new Chromosome(Rotate(offspring, begin).ToArray());
         }
 
-        public static Chromosome OnePointSingleOffspring(Chromosome parent1, Chromosome parent2, int point) 
+        public static Chromosome OnePointSingleOffspring(Chromosome parent1, Chromosome parent2, int point)
         {
             return OnePoint(parent1, parent2, point).Item1;
         }

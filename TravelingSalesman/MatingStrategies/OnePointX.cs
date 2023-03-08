@@ -5,7 +5,7 @@ namespace TravelingSalesman.MatingStrategies
     internal class OnePointX : IMatingStrategy
     {
         private readonly int[] canonicTour;
-        public OnePointX(int[] canonicTour) 
+        public OnePointX(int[] canonicTour)
         {
             this.canonicTour = canonicTour;
         }

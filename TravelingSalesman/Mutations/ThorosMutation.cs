@@ -1,14 +1,15 @@
 ﻿using TravelingSalesman.Chromosomes;
+using TravelingSalesman.Utils;
 
 namespace TravelingSalesman.Mutations
 {
-    public class ThrorosMutation : IMutation
+    public class ThorosMutation : IMutation
     {
-        private readonly Random rand;
+        private readonly IArrayShuffler arrayShufler;
 
-        public ThrorosMutation(Random rand)
+        public ThorosMutation(IArrayShuffler arrayShufler)
         {
-            this.rand = rand;
+            this.arrayShufler = arrayShufler;
         }
 
         public Chromosome Mutate(Chromosome chromosome)
@@ -17,9 +18,9 @@ namespace TravelingSalesman.Mutations
             int[] mutated = new int[chromosome.Genomes.Length];
             Array.Copy(genomes, mutated, mutated.Length);
 
-            int[] positions = new int[mutated.Length].Select((_, index) => index).ToArray();
-            rand.Shuffle(positions);
-            int[] ps = positions.Take(3).Order().ToArray();
+            int[] positions = Enumerable.Range(0, mutated.Length).ToArray();
+            //int[] ps = rand.Shuffle(positions).Take(3).Order().ToArray();
+            int[] ps = arrayShufler.Shuffle(positions).Take(3).Order().ToArray();
 
             mutated[ps[0]] = genomes[ps[2]];
             mutated[ps[2]] = genomes[ps[1]];
