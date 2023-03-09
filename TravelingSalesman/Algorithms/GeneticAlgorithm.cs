@@ -35,72 +35,65 @@ namespace TravelingSalesman.Algorithms
             this.mutation = mutation;
         }
 
-        // This is the "pure" version of the algorithm due to J.-Y. Potvin
-        // A generalization for different numbers of mating chromosomes would be nice
-        public void UpdatePopulation1(double mutationRate)
+        public void UpdatePopulation(double crossoverProbability, double mutationProbability)
         {
-            Chromosome[] parents = new Chromosome[population.Length];
+            Chromosome[] parents = new Chromosome[population.Length / 2];
 
-            for (int i = 0; i < population.Length; i++)
+            for (int i = 0; i < population.Length / 2; i++)
             {
                 parents[i] = chromosomeSelector.SelectForMating(population);
             }
 
-            Chromosome[] updatedPopulation = new Chromosome[population.Length];
-
-            for (int i = 0; i < population.Length; i += 2)
+            for(int i = 0; i < population.Length; i++)
             {
-                var parent1 = parents[rand.Next(population.Length)];
-                var parent2 = parents[rand.Next(population.Length)];
+                if (rand.NextDouble() > crossoverProbability)
+                    continue;
 
-                var (offspring1, offspring2) = matingStrategy.ProduceOffspring(parent1, parent2);
-                updatedPopulation[i] = offspring1;
-                updatedPopulation[i + 1] = offspring2;
+                var parent1 = parents[rand.Next(parents.Length)];
+                var parent2 = parents[rand.Next(parents.Length)];
+
+                population[i] = matingStrategy.ProduceSingleOffspring(parent1, parent2);
             }
 
-            for (int i = 0; i < population.Length; i++)
+            for(int i = 0; i < population.Length; i++)
             {
-                if (rand.NextDouble() <= mutationRate)
+                if(rand.NextDouble() <= mutationProbability)
                 {
-                    updatedPopulation[i] = mutation.Mutate(updatedPopulation[i]);
+                    population[i] = mutation.Mutate(population[i]);
                 }
             }
-
-            Array.Copy(updatedPopulation, population, population.Length);
         }
 
-        // This is the algorithm due to K.D.
-        public void UpdatePopulation2(double mutationRate)
+        public void Run(int maxIterations, double crossoverProbability, double mutationProbability)
         {
-            Chromosome[] updatedPopulation = new Chromosome[population.Length];
-
-            for (int i = 0; i < updatedPopulation.Length; i++)
-            {
-                Chromosome parent1 = chromosomeSelector.DrawRandomChromosome(population);
-                Chromosome parent2 = chromosomeSelector.DrawRandomChromosome(population);
-
-                updatedPopulation[i] = matingStrategy.ProduceSingleOffspring(parent1, parent2);
-            }
-
-            for (int i = 0; i < population.Length; i++)
-            {
-                if (rand.NextDouble() <= mutationRate)
-                {
-                    updatedPopulation[i] = mutation.Mutate(population[i]);
-                }
-            }
-
-            Array.Copy(updatedPopulation, population, population.Length);
-        }
-
-        public void Run(int iterations, double mutationRate)
-        {
-            for (int i = 0; i < iterations; i++)
+            for (int i = 0; i < maxIterations; i++)
             {
                 if (LogPath is not null)
                     LogProgress(i);
 
-                UpdatePopulation1(mutationRate);
+                UpdatePopulation(crossoverProbability, mutationProbability);
+            }
+
+            if (LogPath is not null)
+                File.AppendAllText(LogPath!, log.ToString());
+        }
+
+        public void RunDHMILC(double step)
+        {
+            double crossoverProbability = 0;
+            double mutationProbability = 1;
+            int i = 0;
+
+            while(crossoverProbability <= 1 && mutationProbability >= 0)
+            {
+                if (LogPath is not null)
+                    LogProgress(i);
+
+                UpdatePopulation(crossoverProbability, mutationProbability);
+
+                crossoverProbability += step;
+                mutationProbability -= step;
+                i++;
             }
 
             if (LogPath is not null)
