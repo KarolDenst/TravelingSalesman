@@ -5,7 +5,12 @@ namespace TravelingSalesman.Factories
 {
     internal class TSPChromosomeFactory : IChromosomeFactory
     {
-        static readonly Random Rand = new Random();
+        private readonly Random rand;
+
+        public TSPChromosomeFactory(Random rand)
+        {
+            this.rand = rand;
+        }
 
         public Chromosome CreateRandomChromosome(int length)
         {
@@ -15,7 +20,7 @@ namespace TravelingSalesman.Factories
                 chromosome[i] = i;
             }
 
-            return new Chromosome(chromosome.OrderBy(x => Rand.NextDouble()).ToArray());
+            return new Chromosome(chromosome.OrderBy(x => rand.NextDouble()).ToArray());
         }
     }
 }

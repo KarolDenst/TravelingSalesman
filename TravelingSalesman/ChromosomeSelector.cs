@@ -12,46 +12,31 @@ namespace TravelingSalesman
             this.fitnessCalculator = fitnessCalculator;
         }
 
-        public Chromosome SelectForMating(Chromosome[] chromosomes)
-        {
-            var fitnessSum = chromosomes.Sum(fitnessCalculator.CalculateFitness);
-            double r = rand.NextDouble() * fitnessSum;
-
-            double currentSum = 0;
-            foreach (var c in chromosomes)
-            {
-                currentSum += fitnessCalculator.CalculateFitness(c);
-                if (currentSum >= r)
-                    return c;
-            }
-
-            return chromosomes[^1];
-        }
-
         private double[] GetChances(Chromosome[] population)
         {
-            double fitnessSum = 0;
-            foreach (var chromosome in population)
-            {
-                fitnessSum += fitnessCalculator.CalculateFitness(chromosome);
-            }
-            double[] chance = new double[population.Length];
+            double fitnessSum = population.Sum(fitnessCalculator.CalculateFitness);
+
+            double[] chances = new double[population.Length];
+            double prevProbability = 0;
 
             for (int i = 0; i < population.Length; i++)
             {
-                chance[i] = fitnessCalculator.CalculateFitness(population[i]) / fitnessSum;
+                chances[i] = prevProbability + fitnessCalculator.CalculateFitness(population[i]) / fitnessSum;
+                prevProbability = chances[i];
             }
-            chance[^1] = 1;
 
-            return chance;
+            return chances;
         }
 
-        public Chromosome DrawRandomChromosome(Chromosome[] population)
+        public Chromosome SelectForMating(Chromosome[] population)
         {
-            double[] chance = GetChances(population);
+            double[] chances = GetChances(population);
+            double r = rand.NextDouble();
+
             for (int i = 0; i < population.Length; i++)
             {
-                if (rand.NextDouble() < chance[i]) return population[i];
+                if (r < chances[i]) 
+                    return population[i];
             }
 
             return population[^1];
