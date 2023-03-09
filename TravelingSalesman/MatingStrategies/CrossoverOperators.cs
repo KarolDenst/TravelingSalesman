@@ -8,49 +8,48 @@ namespace TravelingSalesman.MatingStrategies
         {
             int[] p1 = parent1.Genomes;
             int[] p2 = parent2.Genomes;
-            if (length == 0)
-                return new Chromosome(p1);
-
             int n = p1.Length;
+
             int[] offspring = new int[n];
             Array.Fill(offspring, -1);
 
-            List<int> shadowed = new();
-            List<int> shadowing = new();
-
-            for (int i = begin; i < begin + length; i++)
+            for (int i = begin; i <= begin + length; i++)
             {
                 offspring[i] = p1[i];
             }
 
-            for (int i = begin; i < begin + length; i++)
+            for (int i = begin; i <= begin + length; i++)
             {
-                if (!offspring.Contains(p2[i]))
-                {
-                    shadowed.Add(p2[i]);
-                    shadowing.Add(p1[i]);
-                }
-            }
+                int value = p2[i];
 
-            for (int i = 0; i < shadowed.Count; i++)
-            {
-                int pos = Array.IndexOf(p2, shadowing[i]);
-                if (offspring[pos] == -1)
+                if (Array.IndexOf(offspring, value) == -1)
                 {
-                    offspring[pos] = shadowed[i];
-                }
-                else
-                {
-                    int k = offspring[pos];
-                    int posK = Array.IndexOf(p2, k);
-                    offspring[posK] = shadowed[i];
+                    int j = i;
+
+                    while (offspring[j] != -1)
+                    {
+                        j = Array.IndexOf(p2, offspring[j]);
+                    }
+
+                    offspring[j] = value;
                 }
             }
 
             for (int i = 0; i < n; i++)
             {
-                if (offspring[i] == -1)
-                    offspring[i] = p2[i];
+                if (i >= begin && i <= begin + length)
+                    continue;
+
+                int value = p2[i];
+                if (Array.IndexOf(offspring, value) == -1)
+                {
+                    int j = i;
+                    while (offspring[j] != -1)
+                    {
+                        j = Array.IndexOf(p2, offspring[j]);
+                    }
+                    offspring[j] = value;
+                }
             }
 
             return new Chromosome(offspring);

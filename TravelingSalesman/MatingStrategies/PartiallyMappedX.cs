@@ -6,7 +6,7 @@ namespace TravelingSalesman.MatingStrategies
     {
         private readonly Random rand;
 
-        public PartiallyMappedX(Random rand) 
+        public PartiallyMappedX(Random rand)
         {
             this.rand = rand;
         }

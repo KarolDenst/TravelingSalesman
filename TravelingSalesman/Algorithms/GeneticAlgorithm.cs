@@ -58,11 +58,11 @@ namespace TravelingSalesman.Algorithms
                 updatedPopulation[i + 1] = offspring2;
             }
 
-            for(int i = 0; i < population.Length; i++)
+            for (int i = 0; i < population.Length; i++)
             {
-                if(rand.NextDouble() <= mutationRate)
+                if (rand.NextDouble() <= mutationRate)
                 {
-                    updatedPopulation[i] = mutation.Mutate(population[i]);
+                    updatedPopulation[i] = mutation.Mutate(updatedPopulation[i]);
                 }
             }
 
@@ -97,7 +97,7 @@ namespace TravelingSalesman.Algorithms
         {
             for (int i = 0; i < iterations; i++)
             {
-                if(LogPath is not null)
+                if (LogPath is not null)
                     LogProgress(i);
 
                 UpdatePopulation1(mutationRate);
@@ -114,7 +114,7 @@ namespace TravelingSalesman.Algorithms
                 case 0:
                     var (chromosome, cycleLength) = GetLongestCycleChromosome();
                     log.Append($"{iteration}: {chromosome} {cycleLength} {Environment.NewLine}");
-                    
+
                     break;
 
                 default:
@@ -126,10 +126,10 @@ namespace TravelingSalesman.Algorithms
         {
             double maxCycleLength = 0;
             Chromosome maxCycleLengthChromosome;
-            foreach(var chromosome in population)
+            foreach (var chromosome in population)
             {
                 double cycleLength = fitnessCalculator.UnderlyingGraph.GetCycleLength(chromosome.Genomes);
-                if(cycleLength > maxCycleLength)
+                if (cycleLength > maxCycleLength)
                 {
                     maxCycleLength = cycleLength;
                     maxCycleLengthChromosome = chromosome;

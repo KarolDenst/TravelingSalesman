@@ -17,7 +17,7 @@ namespace Tests.Mutations
             };
         }
 
-        public static IEnumerable<object[]> TestDataRSM() 
+        public static IEnumerable<object[]> TestDataRSM()
         {
             yield return new object[]
             {

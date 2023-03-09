@@ -11,21 +11,21 @@ namespace Tests.MatingStrategies
                 new int[] { 1, 5, 2, 3, 6, 4, 8, 7 },
                 new int[] { 1, 2, 5, 6, 4, 3, 8, 7 },
                 new int[] { 1, 4, 2, 3, 6, 5, 7, 8 },
-                2, 3 };
+                2, 2 };
 
             yield return new object[] {
                 new int[] { 9, 3, 2, 4, 5, 6, 7, 1, 8 },
                 new int[] { 1, 7, 3, 8, 2, 6, 5, 4, 9 },
                 new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
                 new int[] { 9, 3, 7, 8, 2, 6, 5, 1, 4 },
-                3, 4 };
+                3, 3 };
 
             yield return new object[] {
                 new int[] { 4, 8, 5, 2, 7, 1, 3, 6 },
                 new int[] { 3, 4, 2, 1, 6, 8, 7, 5 },
                 new int[] { 3, 4, 8, 2, 7, 1, 6, 5 },
                 new int[] { 4, 2, 5, 1, 6, 8, 3, 7 },
-                3, 3 };
+                3, 2 };
         }
 
         public static IEnumerable<object[]> TestDataCx()
