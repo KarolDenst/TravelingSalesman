@@ -1,13 +1,18 @@
-﻿using TravelingSalesman.Factories.Interfaces;
-using TravelingSalesman.Interfaces;
+﻿using TravelingSalesman.Chromosomes;
+using TravelingSalesman.Factories.Interfaces;
 
 namespace TravelingSalesman.Factories
 {
     internal class TSPChromosomeFactory : IChromosomeFactory
     {
-        static readonly Random Rand = new Random();
+        private readonly Random rand;
 
-        public IChromosome CreateRandomChromosome(int length)
+        public TSPChromosomeFactory(Random rand)
+        {
+            this.rand = rand;
+        }
+
+        public Chromosome CreateRandomChromosome(int length)
         {
             int[] chromosome = new int[length];
             for (int i = 0; i < length; i++)
@@ -15,7 +20,7 @@ namespace TravelingSalesman.Factories
                 chromosome[i] = i;
             }
 
-            return new TSPChromosome(chromosome.OrderBy(x => Rand.NextDouble()).ToArray());
+            return new Chromosome(chromosome.OrderBy(x => rand.NextDouble()).ToArray());
         }
     }
 }

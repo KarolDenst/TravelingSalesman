@@ -1,9 +1,9 @@
-﻿using TravelingSalesman.Interfaces;
+﻿using TravelingSalesman.Chromosomes;
 
 namespace TravelingSalesman.Factories.Interfaces
 {
-    internal interface IChromosomeFactory
+    public interface IChromosomeFactory
     {
-        public IChromosome CreateRandomChromosome(int length);
+        public Chromosome CreateRandomChromosome(int length);
     }
 }

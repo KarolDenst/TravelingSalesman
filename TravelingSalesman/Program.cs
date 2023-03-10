@@ -1,19 +1,49 @@
-﻿using TravelingSalesman;
+﻿using System.Diagnostics;
+using System.Configuration;
+using TravelingSalesman;
+using TravelingSalesman.Algorithms;
+using TravelingSalesman.Data;
 using TravelingSalesman.Factories;
+using TravelingSalesman.Factories.Interfaces;
+using TravelingSalesman.MatingStrategies;
+using TravelingSalesman.Mutations;
+using TravelingSalesman.TSPFitness;
 
-City city = new City(@"C:\Projects\TravelingSalesman\Cities\br17.xml");
-double[,] map = new double[,] {
-            { 0, 2, 9999, 12, 5 },
-            { 2, 0, 4, 8, 9999 },
-            { 9999, 4, 0, 3, 3 },
-            { 12, 8, 3, 0, 10 },
-            { 5, 9999, 3, 10, 0 } };
+string cityName = "br17";
 
-Graph graph = new Graph(map);
-TSPChromosomeFactory factory = new TSPChromosomeFactory();
-TSPChromosome.SetData(graph);
+City city = new City(Path.Combine(@"../../../../Cities/", cityName + ".xml"));
+Graph graphBr17 = new Graph(city);
 
-EvolutionaryAlgo algo = new EvolutionaryAlgo(graph.Length, 10, factory);
-algo.Run(50);
+Random rand = new Random(0);
 
-Console.WriteLine(algo.ToString());
+IChromosomeFactory chromosomeFactory = new TSPChromosomeFactory(rand);
+IMatingStrategy matingStrategy = new PartiallyMappedX(rand);
+IMutation mutation = new ReverseSequenceMutation(rand);
+TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graphBr17);
+
+GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,
+    populationSize: 50, chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
+
+string logPath = Path.Combine(@"../../../../Results/", cityName + ".txt");
+File.WriteAllText(logPath, string.Empty);
+
+geneticAlgorithm.LogPath = logPath;
+geneticAlgorithm.Run(200, 0.8, 0.01);
+//geneticAlgorithm.RunDHMILC(0.005);
+
+Console.WriteLine($"The results can be found in {Path.GetFullPath(logPath)}\n");
+string pythonPath = ConfigurationManager.AppSettings.Get("python_path") 
+    ?? throw new Exception("Invalid configuration");
+PlotResults(pythonPath, logPath, $"\"TSP using {matingStrategy} and {mutation}\"");
+
+
+static void PlotResults(string pythonPath, string resultsPath, string title)
+{
+    string plotScriptPath = @"../../../../Script/plot_results.py";
+    ProcessStartInfo start = new ProcessStartInfo();
+    start.FileName = pythonPath;
+    start.Arguments = string.Format("{0} {1} {2}", plotScriptPath, resultsPath, title);
+    start.UseShellExecute = false;
+    Process.Start(start);
+}
+
