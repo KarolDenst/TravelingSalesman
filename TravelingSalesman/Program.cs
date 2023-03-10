@@ -9,8 +9,10 @@ using TravelingSalesman.MatingStrategies;
 using TravelingSalesman.Mutations;
 using TravelingSalesman.TSPFitness;
 
-City br17 = new City(@"../../../../Cities/br17.xml");
-Graph graphBr17 = new Graph(br17);
+string cityName = "br17";
+
+City city = new City(Path.Combine(@"../../../../Cities/", cityName + ".xml"));
+Graph graphBr17 = new Graph(city);
 
 Random rand = new Random(0);
 
@@ -22,7 +24,7 @@ TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graphBr17);
 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,
     populationSize: 50, chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
 
-string logPath = @"../../../../Results/br17.txt";
+string logPath = Path.Combine(@"../../../../Results/", cityName + ".txt");
 File.WriteAllText(logPath, string.Empty);
 
 geneticAlgorithm.LogPath = logPath;

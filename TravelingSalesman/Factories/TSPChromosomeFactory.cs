@@ -1,6 +1,5 @@
 ﻿using TravelingSalesman.Chromosomes;
 using TravelingSalesman.Factories.Interfaces;
-using TravelingSalesman.Interfaces;
 
 namespace TravelingSalesman.Factories
 {
