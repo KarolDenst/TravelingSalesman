@@ -2,14 +2,14 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class CycleX : IMatingStrategy
+    public class CycleX : MatingStrategy
     {
-        public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
+        public override (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
         {
             return CrossoverOperators.CX(parent1, parent2);
         }
 
-        public Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
+        public override Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
         {
             return CrossoverOperators.CXSingleOffspring(parent1, parent2);
         }

@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class PartiallyMappedX : IMatingStrategy
+    public class PartiallyMappedX : MatingStrategy
     {
         private readonly Random rand;
 
@@ -11,7 +11,7 @@ namespace TravelingSalesman.MatingStrategies
             this.rand = rand;
         }
 
-        public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
+        public override (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
         {
             int begin = rand.Next(parent1.Genomes.Length);
             int end = rand.Next(parent2.Genomes.Length);
@@ -20,7 +20,7 @@ namespace TravelingSalesman.MatingStrategies
             return CrossoverOperators.PMX(parent1, parent2, begin, end - begin);
         }
 
-        public Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
+        public override Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
         {
             int begin = rand.Next(parent1.Genomes.Length);
             int end = rand.Next(parent2.Genomes.Length);

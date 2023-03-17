@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class OrderX2 : IMatingStrategy
+    public class OrderX2 : MatingStrategy
     {
         private readonly Random rand;
 
@@ -11,12 +11,12 @@ namespace TravelingSalesman.MatingStrategies
             this.rand = rand;
         }
 
-        public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
+        public override (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
         {
             throw new NotImplementedException();
         }
 
-        public Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
+        public override Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
         {
             int start = rand.Next(parent1.Genomes.Length);
             int end = rand.Next(parent1.Genomes.Length);

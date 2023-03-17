@@ -2,10 +2,10 @@
 
 namespace TravelingSalesman.Mutations
 {
-    public class PartialShuffleMutation : IMutation
+    public class PartialShuffleMutation : Mutation
     {
         // TODO implement
-        public Chromosome Mutate(Chromosome chromosome)
+        public override Chromosome Mutate(Chromosome chromosome)
         {
             throw new NotImplementedException();
         }

@@ -10,13 +10,13 @@ namespace TravelingSalesman.Algorithms
     internal class EvolutionaryAlgo
     {
         static readonly Random Rand = new();
-        readonly IMatingStrategy matingStrategy;
+        readonly MatingStrategy matingStrategy;
         readonly TSPFitnessCalculator fitnessCalculator;
         public Chromosome[] Population;
         readonly PopulationFactory populationFactory;
 
         public EvolutionaryAlgo(int ChromosomeLength, int populationSize,
-            IChromosomeFactory factory, IMatingStrategy matingStrategy,
+            IChromosomeFactory factory, MatingStrategy matingStrategy,
             TSPFitnessCalculator fitnessCalculator)
         {
             populationFactory = new(factory);

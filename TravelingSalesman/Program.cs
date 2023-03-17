@@ -17,8 +17,8 @@ Graph graphBr17 = new Graph(city);
 Random rand = new Random(0);
 
 IChromosomeFactory chromosomeFactory = new TSPChromosomeFactory(rand);
-IMatingStrategy matingStrategy = new PartiallyMappedX(rand);
-IMutation mutation = new ReverseSequenceMutation(rand);
+MatingStrategy matingStrategy = new PartiallyMappedX(rand);
+Mutation mutation = new ReverseSequenceMutation(rand);
 TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graphBr17);
 
 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,

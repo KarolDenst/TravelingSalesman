@@ -2,14 +2,14 @@
 
 namespace TravelingSalesman.Mutations
 {
-    public class CenterInverseMutation : IMutation
+    public class CenterInverseMutation : Mutation
     {
         private readonly Random rand;
         public CenterInverseMutation(Random rand)
         {
             this.rand = rand;
         }
-        public Chromosome Mutate(Chromosome chromosome)
+        public override Chromosome Mutate(Chromosome chromosome)
         {
             int[] genomes = chromosome.Genomes;
 

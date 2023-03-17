@@ -8,15 +8,15 @@ using TravelingSalesman.TSPFitness;
 
 namespace TravelingSalesman.Algorithms
 {
-    internal class GeneticAlgorithm
+    public class GeneticAlgorithm
     {
         static readonly Random rand = new();
-        private readonly IMatingStrategy matingStrategy;
+        private readonly MatingStrategy matingStrategy;
         private readonly TSPFitnessCalculator fitnessCalculator;
         private readonly Chromosome[] population;
         private readonly PopulationFactory populationFactory;
         private readonly ChromosomeSelector chromosomeSelector;
-        private readonly IMutation mutation;
+        private readonly Mutation mutation;
 
         public string? LogPath { get; set; }
         public int LogLevel { get; set; } = 0;
@@ -24,8 +24,8 @@ namespace TravelingSalesman.Algorithms
         private readonly StringBuilder log = new StringBuilder();
 
         public GeneticAlgorithm(int chromosomeLength, int populationSize,
-            IChromosomeFactory factory, IMatingStrategy matingStrategy,
-            IMutation mutation, TSPFitnessCalculator fitnessCalculator)
+            IChromosomeFactory factory, MatingStrategy matingStrategy,
+            Mutation mutation, TSPFitnessCalculator fitnessCalculator)
         {
             populationFactory = new(factory);
             population = populationFactory.CreatePopulation(populationSize, chromosomeLength);
@@ -105,7 +105,7 @@ namespace TravelingSalesman.Algorithms
             switch (LogLevel)
             {
                 case 0:
-                    var (chromosome, cycleLength) = GetLongestCycleChromosome();
+                    var (chromosome, cycleLength) = GetShortestCycleChromosome();
                     log.Append($"{iteration}: {chromosome} {cycleLength} {Environment.NewLine}");
 
                     break;
@@ -115,7 +115,7 @@ namespace TravelingSalesman.Algorithms
             }
         }
 
-        private (Chromosome, double) GetLongestCycleChromosome()
+        public (Chromosome, double) GetShortestCycleChromosome()
         {
             double maxCycleLength = 0;
             Chromosome maxCycleLengthChromosome;

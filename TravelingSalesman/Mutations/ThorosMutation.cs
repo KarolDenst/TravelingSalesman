@@ -3,7 +3,7 @@ using TravelingSalesman.Utils;
 
 namespace TravelingSalesman.Mutations
 {
-    public class ThorosMutation : IMutation
+    public class ThorosMutation : Mutation
     {
         private readonly IArrayShuffler arrayShufler;
 
@@ -12,7 +12,7 @@ namespace TravelingSalesman.Mutations
             this.arrayShufler = arrayShufler;
         }
 
-        public Chromosome Mutate(Chromosome chromosome)
+        public override Chromosome Mutate(Chromosome chromosome)
         {
             int[] genomes = chromosome.Genomes;
             int[] mutated = new int[chromosome.Genomes.Length];

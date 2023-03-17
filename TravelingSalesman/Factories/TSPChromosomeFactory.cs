@@ -3,7 +3,7 @@ using TravelingSalesman.Factories.Interfaces;
 
 namespace TravelingSalesman.Factories
 {
-    internal class TSPChromosomeFactory : IChromosomeFactory
+    public class TSPChromosomeFactory : IChromosomeFactory
     {
         private readonly Random rand;
 
