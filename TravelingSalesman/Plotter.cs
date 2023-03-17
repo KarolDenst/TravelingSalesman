@@ -95,32 +95,6 @@ namespace TravelingSalesman
             return "";
         }
 
-        private static string GetPath()
-        {
-            var entries = Environment.GetEnvironmentVariable("path").Split(';');
-            string python_location = null;
-
-            foreach (string entry in entries)
-            {
-                if (entry.ToLower().Contains("python"))
-                {
-                    var breadcrumbs = entry.Split('\\');
-                    foreach (string breadcrumb in breadcrumbs)
-                    {
-                        if (breadcrumb.ToLower().Contains("python"))
-                        {
-                            python_location += breadcrumb + '\\';
-                            break;
-                        }
-                        python_location += breadcrumb + '\\';
-                    }
-                    break;
-                }
-            }
-
-            return python_location;
-        }
-
         public static void PlotResults(string resultsPath, string title)
         {
             string pythonPath = GetPythonPath();
