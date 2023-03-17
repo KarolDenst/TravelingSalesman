@@ -16,7 +16,7 @@ namespace TravelingSalesman.Algorithms
         private readonly Chromosome[] population;
         private readonly PopulationFactory populationFactory;
         private readonly ChromosomeSelector chromosomeSelector;
-        private readonly IMutation mutation;
+        internal readonly IMutation mutation;
 
         public string? LogPath { get; set; }
         public int LogLevel { get; set; } = 0;

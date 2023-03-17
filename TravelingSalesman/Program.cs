@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Configuration;
+﻿using System.Configuration;
 using TravelingSalesman;
 using TravelingSalesman.Algorithms;
 using TravelingSalesman.Data;
@@ -21,29 +20,19 @@ IMatingStrategy matingStrategy = new PartiallyMappedX(rand);
 IMutation mutation = new ReverseSequenceMutation(rand);
 TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graphBr17);
 
-GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,
-    populationSize: 50, chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
+//GeneticAlgorithm algorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,
+//    populationSize: 50, chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
+EvolutionaryAlgorithm algorithm = new EvolutionaryAlgorithm(chromosomeLength: graphBr17.Length,
+    populationSize: 50, chromosomeFactory, matingStrategy, fitnessCalculator);
 
 string logPath = Path.Combine(@"../../../../Results/", cityName + ".txt");
 File.WriteAllText(logPath, string.Empty);
 
-geneticAlgorithm.LogPath = logPath;
-geneticAlgorithm.Run(200, 0.8, 0.01);
+algorithm.LogPath = logPath;
+algorithm.Run(200, 0.8, 0.01);
 //geneticAlgorithm.RunDHMILC(0.005);
 
 Console.WriteLine($"The results can be found in {Path.GetFullPath(logPath)}\n");
 string pythonPath = ConfigurationManager.AppSettings.Get("python_path") 
     ?? throw new Exception("Invalid configuration");
-PlotResults(pythonPath, logPath, $"\"TSP using {matingStrategy} and {mutation}\"");
-
-
-static void PlotResults(string pythonPath, string resultsPath, string title)
-{
-    string plotScriptPath = @"../../../../Script/plot_results.py";
-    ProcessStartInfo start = new ProcessStartInfo();
-    start.FileName = pythonPath;
-    start.Arguments = string.Format("{0} {1} {2}", plotScriptPath, resultsPath, title);
-    start.UseShellExecute = false;
-    Process.Start(start);
-}
-
+Plotter.PlotResults(logPath, $"\"TSP using {matingStrategy} and {mutation}\"");
