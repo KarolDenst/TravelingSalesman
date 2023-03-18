@@ -117,21 +117,19 @@ namespace TravelingSalesman.Algorithms
 
         public (Chromosome, double) GetShortestCycleChromosome()
         {
-            double maxCycleLength = 0;
-            Chromosome maxCycleLengthChromosome;
+            double minCycleLength = 0;
+            Chromosome minCycleLengthChromosome = population[0];
             foreach (var chromosome in population)
             {
                 double cycleLength = fitnessCalculator.UnderlyingGraph.GetCycleLength(chromosome.Genomes);
-                if (cycleLength > maxCycleLength)
+                if (cycleLength < minCycleLength)
                 {
-                    maxCycleLength = cycleLength;
-                    maxCycleLengthChromosome = chromosome;
+                    minCycleLength = cycleLength;
+                    minCycleLengthChromosome = chromosome;
                 }
             }
 
-            maxCycleLengthChromosome = population[^1];
-
-            return (maxCycleLengthChromosome, maxCycleLength);
+            return (minCycleLengthChromosome, minCycleLength);
         }
 
         public override string ToString()

@@ -54,7 +54,6 @@ namespace TravelingSalesmanGUI
             matingComboBox.Items.Add(new CycleX());
             matingComboBox.Items.Add(new OrderX(rand));
             matingComboBox.Items.Add(new OrderX2(rand));
-            matingComboBox.Items.Add(new PartiallyMappedX(rand));
         }
 
         private void DrawCircle(Point location) => graphics.FillEllipse(brush, location.X - size / 2, location.Y - size / 2, size, size);
@@ -94,23 +93,27 @@ namespace TravelingSalesmanGUI
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            Graph graphBr17 = Utils.GetGraph(points.ToArray());
+            Graph graph = Utils.GetGraph(points.ToArray());
 
-            Random rand = new Random(0);
+            Random rand = new Random();
 
             var chromosomeFactory = new TSPChromosomeFactory(rand);
             var matingStrategy = (MatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
             var mutation = (Mutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
-            var fitnessCalculator = new TSPFitnessCalculator(graphBr17);
+            var fitnessCalculator = new TSPFitnessCalculator(graph);
+            var populationSize = (int)populationUpDown.Value;
+            var maxIterations = (int)maxIterationUpDown.Value;
+            var matingProbability = (double)matingProbUpDown.Value;
+            var mutationProbability = (double)mutationProbUpDown.Value;
 
-            GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(chromosomeLength: graphBr17.Length,
-                populationSize: 50, chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
+            GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize, 
+                chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
 
             string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
-            geneticAlgorithm.LogPath = logPath;
-            geneticAlgorithm.Run(200, 0.8, 0.01);
+            algorithm.LogPath = logPath;
+            algorithm.Run(maxIterations, matingProbability, mutationProbability);
 
-            int[] genomes = geneticAlgorithm.GetShortestCycleChromosome().Item1.Genomes;
+            int[] genomes = algorithm.GetShortestCycleChromosome().Item1.Genomes;
 
             Draw(genomes);
         }
