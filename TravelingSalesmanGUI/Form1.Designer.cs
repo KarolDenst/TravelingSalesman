@@ -41,6 +41,7 @@
             this.runButton = new System.Windows.Forms.Button();
             this.mutationComboBox = new System.Windows.Forms.ComboBox();
             this.matingComboBox = new System.Windows.Forms.ComboBox();
+            this.resetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mutationProbUpDown)).BeginInit();
@@ -62,6 +63,7 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.resetButton);
             this.groupBox1.Controls.Add(this.mutationProbUpDown);
             this.groupBox1.Controls.Add(this.matingProbUpDown);
             this.groupBox1.Controls.Add(this.maxIterationUpDown);
@@ -194,7 +196,7 @@
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(59, 232);
+            this.runButton.Location = new System.Drawing.Point(6, 232);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(94, 29);
             this.runButton.TabIndex = 2;
@@ -217,6 +219,16 @@
             this.matingComboBox.Name = "matingComboBox";
             this.matingComboBox.Size = new System.Drawing.Size(201, 28);
             this.matingComboBox.TabIndex = 0;
+            // 
+            // resetButton
+            // 
+            this.resetButton.Location = new System.Drawing.Point(113, 232);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(94, 29);
+            this.resetButton.TabIndex = 11;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // Form1
             // 
@@ -253,5 +265,6 @@
         private NumericUpDown maxIterationUpDown;
         private TextBox textBox4;
         private TextBox textBox3;
+        private Button resetButton;
     }
 }

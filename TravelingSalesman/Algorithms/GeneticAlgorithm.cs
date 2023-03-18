@@ -117,7 +117,7 @@ namespace TravelingSalesman.Algorithms
 
         public (Chromosome, double) GetShortestCycleChromosome()
         {
-            double minCycleLength = 0;
+            double minCycleLength = double.MaxValue;
             Chromosome minCycleLengthChromosome = population[0];
             foreach (var chromosome in population)
             {

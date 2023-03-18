@@ -1,12 +1,7 @@
-using System.Drawing;
-using System.Windows.Forms;
 using TravelingSalesman.Mutations;
 using TravelingSalesman.Utils;
 using TravelingSalesman.MatingStrategies;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using TravelingSalesman.Data;
-using TravelingSalesman.Factories.Interfaces;
-using TravelingSalesman;
 using TravelingSalesman.TSPFitness;
 using TravelingSalesman.Factories;
 using TravelingSalesman.Algorithms;
@@ -116,6 +111,13 @@ namespace TravelingSalesmanGUI
             int[] genomes = algorithm.GetShortestCycleChromosome().Item1.Genomes;
 
             Draw(genomes);
+        }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            points = new List<Point>();
+            graphics.Clear(Color.White);
+            canvas.Refresh();
         }
     }
 }
