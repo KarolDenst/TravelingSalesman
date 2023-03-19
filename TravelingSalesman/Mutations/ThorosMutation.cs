@@ -28,5 +28,10 @@ namespace TravelingSalesman.Mutations
 
             return mutated;
         }
+
+        public override string ToString()
+        {
+            return "THOROS mutation";
+        }
     }
 }

@@ -37,5 +37,10 @@ namespace TravelingSalesman.MatingStrategies
 
             return OrdinalRepresentaion.FromOrd((int[])offspring, canonicTour);
         }
+
+        public override string ToString()
+        {
+            return "one point crossover";
+        }
     }
 }

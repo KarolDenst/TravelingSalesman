@@ -5,11 +5,12 @@ namespace TravelingSalesman
 {
     public class ChromosomeSelector
     {
-        static readonly Random rand = new();
+        private readonly Random rand;
         private readonly IFitnessCalculator fitnessCalculator;
-        public ChromosomeSelector(IFitnessCalculator fitnessCalculator)
+        public ChromosomeSelector(IFitnessCalculator fitnessCalculator, Random rand)
         {
             this.fitnessCalculator = fitnessCalculator;
+            this.rand = rand;
         }
 
         private double[] GetChances(Chromosome[] population)
@@ -35,7 +36,7 @@ namespace TravelingSalesman
 
             for (int i = 0; i < population.Length; i++)
             {
-                if (r < chances[i]) 
+                if (r < chances[i])
                     return population[i];
             }
 
