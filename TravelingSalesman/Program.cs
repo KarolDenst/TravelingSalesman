@@ -7,7 +7,7 @@ using TravelingSalesman.MatingStrategies;
 using TravelingSalesman.Mutations;
 using TravelingSalesman.TSPFitness;
 
-string cityName = "br17";
+string cityName = "ch130";
 
 City city = new City(Path.Combine(@"../../../../Cities/", cityName + ".xml"));
 Graph graph = new Graph(city);

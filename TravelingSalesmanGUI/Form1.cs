@@ -36,7 +36,6 @@ namespace TravelingSalesmanGUI
         private void SetUpMutations(Random rand)
         {
             mutationComboBox.Items.Add(new CenterInverseMutation(rand));
-            mutationComboBox.Items.Add(new PartialShuffleMutation());
             mutationComboBox.Items.Add(new ReverseSequenceMutation(rand));
             mutationComboBox.Items.Add(new ThorasMutation(rand));
             mutationComboBox.Items.Add(new ThorosMutation(new KnuthArrayShuffler(rand)));
