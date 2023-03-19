@@ -20,9 +20,11 @@ public class Graph : IData
 
         for (int i = 0; i < Length; i++)
         {
-            for (int j = 0; j < Length; j++)
+            for (int j = 0; j < city.Graph.Vertex[i].Edge.Count; j++)
             {
-                Table[i, j] = city.Graph.Vertex[i].Edge[j].Cost;
+                int to = city.Graph.Vertex[i].Edge[j].Vertex;
+                var cost = city.Graph.Vertex[i].Edge[j].Cost;
+                Table[i, to] = cost;
             }
         }
     }

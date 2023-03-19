@@ -3,7 +3,7 @@ using TravelingSalesman.Utils;
 
 namespace TravelingSalesman.Mutations
 {
-    public class ThorosMutation : Mutation
+    public class ThorosMutation : IMutation
     {
         private readonly IArrayShuffler arrayShufler;
 
@@ -12,7 +12,7 @@ namespace TravelingSalesman.Mutations
             this.arrayShufler = arrayShufler;
         }
 
-        public override Chromosome Mutate(Chromosome chromosome)
+        public Chromosome Mutate(Chromosome chromosome)
         {
             int[] genomes = chromosome.Genomes;
             int[] mutated = new int[chromosome.Genomes.Length];
@@ -27,6 +27,11 @@ namespace TravelingSalesman.Mutations
             mutated[ps[1]] = genomes[ps[0]];
 
             return mutated;
+        }
+
+        public override string ToString()
+        {
+            return "THOROS mutation";
         }
     }
 }

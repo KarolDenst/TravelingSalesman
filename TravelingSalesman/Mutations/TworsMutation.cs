@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.Mutations
 {
-    public class TworsMutation : Mutation
+    public class TworsMutation : IMutation
     {
         private readonly Random rand;
 
@@ -11,7 +11,7 @@ namespace TravelingSalesman.Mutations
             this.rand = rand;
         }
 
-        public override Chromosome Mutate(Chromosome chromosome)
+        public Chromosome Mutate(Chromosome chromosome)
         {
             int[] mutated = new int[chromosome.Genomes.Length];
             Array.Copy(chromosome.Genomes, mutated, mutated.Length);
@@ -22,6 +22,11 @@ namespace TravelingSalesman.Mutations
             (mutated[pos1], mutated[pos2]) = (mutated[pos2], mutated[pos1]);
 
             return mutated;
+        }
+
+        public override string ToString()
+        {
+            return "TWORS mutation";
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    public class OnePointX : MatingStrategy
+    public class OnePointX : IMatingStrategy
     {
         private readonly int[] canonicTour;
 
@@ -13,7 +13,7 @@ namespace TravelingSalesman.MatingStrategies
             this.canonicTour = canonicTour;
             this.rand = rand;
         }
-        public override (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
+        public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
         {
             int point = rand.Next(parent1.Genomes.Length);
 
@@ -26,7 +26,7 @@ namespace TravelingSalesman.MatingStrategies
                 OrdinalRepresentaion.FromOrd((int[])offspring2, canonicTour));
         }
 
-        public override Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
+        public Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2)
         {
             int point = rand.Next(parent1.Genomes.Length);
 
@@ -36,6 +36,11 @@ namespace TravelingSalesman.MatingStrategies
             var offspring = CrossoverOperators.OnePointSingleOffspring(parent1Ordinal, parent2Ordinal, point);
 
             return OrdinalRepresentaion.FromOrd((int[])offspring, canonicTour);
+        }
+
+        public override string ToString()
+        {
+            return "one point crossover";
         }
     }
 }

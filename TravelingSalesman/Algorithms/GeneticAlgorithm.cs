@@ -10,13 +10,13 @@ namespace TravelingSalesman.Algorithms
 {
     public class GeneticAlgorithm
     {
-        static readonly Random rand = new();
-        private readonly MatingStrategy matingStrategy;
+        private readonly Random rand;
+        private readonly IMatingStrategy matingStrategy;
         private readonly TSPFitnessCalculator fitnessCalculator;
         private readonly Chromosome[] population;
         private readonly PopulationFactory populationFactory;
         private readonly ChromosomeSelector chromosomeSelector;
-        private readonly Mutation mutation;
+        internal readonly IMutation mutation;
 
         public string? LogPath { get; set; }
         public int LogLevel { get; set; } = 0;
@@ -24,15 +24,17 @@ namespace TravelingSalesman.Algorithms
         private readonly StringBuilder log = new StringBuilder();
 
         public GeneticAlgorithm(int chromosomeLength, int populationSize,
-            IChromosomeFactory factory, MatingStrategy matingStrategy,
-            Mutation mutation, TSPFitnessCalculator fitnessCalculator)
+            IChromosomeFactory factory, IMatingStrategy matingStrategy,
+            IMutation mutation, TSPFitnessCalculator fitnessCalculator,
+            Random rand)
         {
             populationFactory = new(factory);
             population = populationFactory.CreatePopulation(populationSize, chromosomeLength);
             this.matingStrategy = matingStrategy;
             this.fitnessCalculator = fitnessCalculator;
-            chromosomeSelector = new(fitnessCalculator);
+            chromosomeSelector = new(fitnessCalculator, rand);
             this.mutation = mutation;
+            this.rand = rand;
         }
 
         public void UpdatePopulation(double crossoverProbability, double mutationProbability)
@@ -44,7 +46,7 @@ namespace TravelingSalesman.Algorithms
                 parents[i] = chromosomeSelector.SelectForMating(population);
             }
 
-            for(int i = 0; i < population.Length; i++)
+            for (int i = 0; i < population.Length; i++)
             {
                 if (rand.NextDouble() > crossoverProbability)
                     continue;
@@ -55,9 +57,9 @@ namespace TravelingSalesman.Algorithms
                 population[i] = matingStrategy.ProduceSingleOffspring(parent1, parent2);
             }
 
-            for(int i = 0; i < population.Length; i++)
+            for (int i = 0; i < population.Length; i++)
             {
-                if(rand.NextDouble() <= mutationProbability)
+                if (rand.NextDouble() <= mutationProbability)
                 {
                     population[i] = mutation.Mutate(population[i]);
                 }
@@ -84,7 +86,7 @@ namespace TravelingSalesman.Algorithms
             double mutationProbability = 1;
             int i = 0;
 
-            while(crossoverProbability <= 1 && mutationProbability >= 0)
+            while (crossoverProbability <= 1 && mutationProbability >= 0)
             {
                 if (LogPath is not null)
                     LogProgress(i);

@@ -41,6 +41,7 @@ namespace TravelingSalesmanGUI
             mutationComboBox.Items.Add(new ThorasMutation(rand));
             mutationComboBox.Items.Add(new ThorosMutation(new KnuthArrayShuffler(rand)));
             mutationComboBox.Items.Add(new TworsMutation(rand));
+            mutationComboBox.Items.Add(new UselessMutation());
         }
 
         private void SetUpMating(Random rand)
@@ -93,8 +94,8 @@ namespace TravelingSalesmanGUI
             Random rand = new Random();
 
             var chromosomeFactory = new TSPChromosomeFactory(rand);
-            var matingStrategy = (MatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
-            var mutation = (Mutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
+            var matingStrategy = (IMatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
+            var mutation = (IMutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
             var fitnessCalculator = new TSPFitnessCalculator(graph);
             var populationSize = (int)populationUpDown.Value;
             var maxIterations = (int)maxIterationUpDown.Value;
@@ -102,7 +103,7 @@ namespace TravelingSalesmanGUI
             var mutationProbability = (double)mutationProbUpDown.Value;
 
             GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize, 
-                chromosomeFactory, matingStrategy, mutation, fitnessCalculator);
+                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand);
 
             string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
             algorithm.LogPath = logPath;

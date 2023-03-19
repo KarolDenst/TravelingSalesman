@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.Mutations
 {
-    public class ReverseSequenceMutation : Mutation
+    public class ReverseSequenceMutation : IMutation
     {
         private readonly Random rand;
 
@@ -11,7 +11,7 @@ namespace TravelingSalesman.Mutations
             this.rand = rand;
         }
 
-        public override Chromosome Mutate(Chromosome chromosome)
+        public Chromosome Mutate(Chromosome chromosome)
         {
             int[] genomes = chromosome.Genomes;
 
@@ -31,6 +31,11 @@ namespace TravelingSalesman.Mutations
             }
 
             return mutated;
+        }
+
+        public override string ToString()
+        {
+            return "reverse sequence mutation";
         }
     }
 }
