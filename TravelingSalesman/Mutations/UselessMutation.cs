@@ -8,5 +8,10 @@ namespace TravelingSalesman.Mutations
         {
             return chromosome;
         }
+
+        public override string ToString()
+        {
+            return "no mutation";
+        }
     }
 }

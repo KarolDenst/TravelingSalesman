@@ -1,11 +1,14 @@
 ﻿using Microsoft.Win32;
+using System.Configuration;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 
 namespace TravelingSalesman
 {
     internal class Plotter
     {
-        private static string GetPythonPath(string requiredVersion = "", string maxVersion = "")
+        [SupportedOSPlatform("windows")]
+        private static string? GetPythonPath(string requiredVersion = "", string maxVersion = "")
         {
             string[] possiblePythonLocations = new string[3] {
                 @"HKLM\SOFTWARE\Python\PythonCore\",
@@ -13,122 +16,105 @@ namespace TravelingSalesman
                 @"HKLM\SOFTWARE\Wow6432Node\Python\PythonCore\"
             };
 
-            //Version number, install path
-            Dictionary<string, string> pythonLocations = new Dictionary<string, string>();
+            // Version number, install path
+            Dictionary<string, string> pythonLocations = new();
 
             foreach (string possibleLocation in possiblePythonLocations)
             {
-                string regKey = possibleLocation.Substring(0, 4), actualPath = possibleLocation.Substring(5);
-                RegistryKey theKey = (regKey == "HKLM" ? Registry.LocalMachine : Registry.CurrentUser);
-                RegistryKey theValue = theKey.OpenSubKey(actualPath);
-                if (theValue is null) continue;
+                string rootKeyName = possibleLocation.Substring(0, 4);
+                string actualPath = possibleLocation.Substring(5);
 
-                foreach (var v in theValue.GetSubKeyNames())
+                RegistryKey rootKey = rootKeyName switch
                 {
-                    RegistryKey productKey = theValue.OpenSubKey(v);
-                    if (productKey != null)
+                    "HKLM" => Registry.LocalMachine,
+                    "HKCU" => Registry.CurrentUser,
+                    _ => throw new NotImplementedException("Unknown root key"),
+                };
+
+                RegistryKey? subKey;
+                try
+                {
+                    subKey = rootKey.OpenSubKey(actualPath);
+                }
+                catch
+                {
+                    subKey = null;
+                }
+
+                if (subKey is null) continue;
+
+                foreach (var v in subKey.GetSubKeyNames())
+                {
+                    RegistryKey? productKey = subKey.OpenSubKey(v);
+                    if (productKey is null) continue;
+
+                    try
                     {
-                        try
-                        {
-                            string pythonExePath = productKey.OpenSubKey("InstallPath").GetValue("ExecutablePath").ToString();
+                        string? pythonExePath = productKey
+                            .OpenSubKey("InstallPath")
+                            ?.GetValue("ExecutablePath")
+                            ?.ToString();
 
-                            // Comment this in to get (Default) value instead
-                            // string pythonExePath = productKey.OpenSubKey("InstallPath").GetValue("").ToString();
-
-                            if (pythonExePath != null && pythonExePath != "")
-                            {
-                                //Console.WriteLine("Got python version; " + v + " at path; " + pythonExePath);
-                                pythonLocations.Add(v.ToString(), pythonExePath);
-                            }
-                        }
-                        catch
+                        if (!string.IsNullOrEmpty(pythonExePath))
                         {
-                            //Install path doesn't exist
+                            pythonLocations.Add(v, pythonExePath);
                         }
+                    }
+                    catch
+                    {
+                        // couldn't access the InstallPath subkey
                     }
                 }
             }
 
             if (pythonLocations.Count > 0)
             {
-                System.Version desiredVersion = new System.Version(requiredVersion == "" ? "0.0.1" : requiredVersion),
-                    maxPVersion = new System.Version(maxVersion == "" ? "999.999.999" : maxVersion);
+                Version desiredVersion = new Version(requiredVersion == "" ? "3.7" : requiredVersion),
+                    maxPVersion = new Version(maxVersion == "" ? "999.999.999" : maxVersion);
 
-                string highestVersion = "", highestVersionPath = "";
+                string highestVersionPath = "";
 
-                foreach (KeyValuePair<string, string> pVersion in pythonLocations)
+                foreach (var (version, installPath) in pythonLocations)
                 {
-                    //TODO; if on 64-bit machine, prefer the 64 bit version over 32 and vice versa
-                    int index = pVersion.Key.IndexOf("-"); //For x-32 and x-64 in version numbers
-                    string formattedVersion = index > 0 ? pVersion.Key.Substring(0, index) : pVersion.Key;
+                    // TODO if on 64-bit machine, prefer the 64 bit version over 32 and vice versa
+                    int index = version.IndexOf("-"); // For x-32 and x-64 in version numbers
+                    string formattedVersion = index > 0 ? version.Substring(0, index) : version;
 
-                    System.Version thisVersion = new System.Version(formattedVersion);
-                    int comparison = desiredVersion.CompareTo(thisVersion),
-                        maxComparison = maxPVersion.CompareTo(thisVersion);
+                    Version thisVersion = new Version(formattedVersion);
 
-                    if (comparison <= 0)
-                    {
-                        //Version is greater or equal
-                        if (maxComparison >= 0)
-                        {
-                            desiredVersion = thisVersion;
+                    if (thisVersion.CompareTo(desiredVersion) < 0
+                        || thisVersion.CompareTo(maxPVersion) > 0)
+                        continue;
 
-                            highestVersion = pVersion.Key;
-                            highestVersionPath = pVersion.Value;
-                        }
-                        else
-                        {
-                            //Console.WriteLine("Version is too high; " + maxComparison.ToString());
-                        }
-                    }
-                    else
-                    {
-                        //Console.WriteLine("Version (" + pVersion.Key + ") is not within the spectrum.");
-                    }
+                    desiredVersion = thisVersion;
+                    highestVersionPath = installPath;
                 }
 
-                //Console.WriteLine(highestVersion);
-                //Console.WriteLine(highestVersionPath);
                 return highestVersionPath;
             }
 
-            return "";
-        }
-
-        private static string GetPath()
-        {
-            var entries = Environment.GetEnvironmentVariable("path").Split(';');
-            string python_location = null;
-
-            foreach (string entry in entries)
-            {
-                if (entry.ToLower().Contains("python"))
-                {
-                    var breadcrumbs = entry.Split('\\');
-                    foreach (string breadcrumb in breadcrumbs)
-                    {
-                        if (breadcrumb.ToLower().Contains("python"))
-                        {
-                            python_location += breadcrumb + '\\';
-                            break;
-                        }
-                        python_location += breadcrumb + '\\';
-                    }
-                    break;
-                }
-            }
-
-            return python_location;
+            return null;
         }
 
         public static void PlotResults(string resultsPath, string title)
         {
-            string pythonPath = GetPythonPath();
+            string? pythonPath = ConfigurationManager.AppSettings.Get("python_path");
+
+            if (string.IsNullOrEmpty(pythonPath) && OperatingSystem.IsWindows())
+            {
+                pythonPath = GetPythonPath();
+            }
+
+            if (pythonPath == null)
+                throw new Exception("Python not found!");
+
             string plotScriptPath = @"../../../../Script/plot_results.py";
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = pythonPath;
-            start.Arguments = string.Format("{0} {1} {2}", plotScriptPath, resultsPath, title);
-            start.UseShellExecute = false;
+            ProcessStartInfo start = new()
+            {
+                FileName = pythonPath!,
+                Arguments = string.Format("{0} {1} {2}", plotScriptPath, resultsPath, title),
+                UseShellExecute = false
+            };
             Process.Start(start);
         }
     }

@@ -24,5 +24,10 @@ namespace TravelingSalesman.MatingStrategies
 
             return CrossoverOperators.OX2SingleOffspring(parent1, parent2, start, end - start);
         }
+
+        public override string ToString()
+        {
+            return "order crossover (v2)";
+        }
     }
 }

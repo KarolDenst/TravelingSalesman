@@ -13,5 +13,10 @@ namespace TravelingSalesman.MatingStrategies
         {
             return CrossoverOperators.CXSingleOffspring(parent1, parent2);
         }
+
+        public override string ToString()
+        {
+            return "cycle crossover";
+        }
     }
 }

@@ -7,8 +7,10 @@ namespace TravelingSalesman.Algorithms
 {
     internal class EvolutionaryAlgorithm : GeneticAlgorithm
     {
-        public EvolutionaryAlgorithm(int chromosomeLength, int populationSize, IChromosomeFactory factory, IMatingStrategy matingStrategy, TSPFitnessCalculator fitnessCalculator)
-            : base(chromosomeLength, populationSize, factory, matingStrategy, new UselessMutation(), fitnessCalculator)
+        public EvolutionaryAlgorithm(int chromosomeLength, int populationSize, IChromosomeFactory factory,
+            IMatingStrategy matingStrategy, TSPFitnessCalculator fitnessCalculator, Random rand)
+            : base(chromosomeLength, populationSize, factory,
+                  matingStrategy, new UselessMutation(), fitnessCalculator, rand)
         {
         }
     }
