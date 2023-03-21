@@ -39,14 +39,17 @@ namespace TravelingSalesman.Algorithms
 
         public void UpdatePopulation(double crossoverProbability, double mutationProbability)
         {
-            Chromosome[] parents = new Chromosome[population.Length / 2];
+            Chromosome[] parents = new Chromosome[population.Length];
 
-            for (int i = 0; i < population.Length / 2; i++)
+            int eliteCount = population.Length / 4;
+            Chromosome[] elite = population.OrderByDescending(fitnessCalculator.CalculateFitness).Take(eliteCount).ToArray();
+
+            for (int i = 0; i < parents.Length; i++)
             {
                 parents[i] = chromosomeSelector.SelectForMating(population);
             }
 
-            for (int i = 0; i < population.Length; i++)
+            for (int i = 0; i < population.Length - eliteCount; i++)
             {
                 if (rand.NextDouble() > crossoverProbability)
                     continue;
@@ -57,17 +60,27 @@ namespace TravelingSalesman.Algorithms
                 population[i] = matingStrategy.ProduceSingleOffspring(parent1, parent2);
             }
 
-            for (int i = 0; i < population.Length; i++)
+            for (int i = 0; i < population.Length - eliteCount; i++)
             {
                 if (rand.NextDouble() <= mutationProbability)
                 {
                     population[i] = mutation.Mutate(population[i]);
                 }
             }
+
+            for(int i = 0; i < eliteCount; i++)
+            {
+                population[i + population.Length - eliteCount] = elite[i];
+            }
         }
 
         public void Run(int maxIterations, double crossoverProbability, double mutationProbability)
         {
+            if(LogPath is not null)
+            {
+                AddLogTitle();
+            }
+
             for (int i = 0; i < maxIterations; i++)
             {
                 if (LogPath is not null)
@@ -82,6 +95,11 @@ namespace TravelingSalesman.Algorithms
 
         public void RunDHMILC(double step)
         {
+            if (LogPath is not null)
+            {
+                AddLogTitle();
+            }
+
             double crossoverProbability = 0;
             double mutationProbability = 1;
             int i = 0;
@@ -108,13 +126,18 @@ namespace TravelingSalesman.Algorithms
             {
                 case 0:
                     var (chromosome, cycleLength) = GetShortestCycleChromosome();
-                    log.Append($"{iteration}: {chromosome} {cycleLength} {Environment.NewLine}");
+                    log.Append($"{iteration}: {chromosome} {cycleLength}{Environment.NewLine}");
 
                     break;
 
                 default:
                     break;
             }
+        }
+
+        private void AddLogTitle()
+        {
+            log.Append($"{matingStrategy} and {mutation}{Environment.NewLine}");
         }
 
         public (Chromosome, double) GetShortestCycleChromosome()

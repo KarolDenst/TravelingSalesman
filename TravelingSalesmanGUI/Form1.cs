@@ -10,12 +10,12 @@ namespace TravelingSalesmanGUI
 {
     public partial class Form1 : Form
     {
-        Graphics graphics;
-        List<Point> points;
-        SolidBrush brush;
-        Pen pen;
-        int size = 10;
-
+        private readonly Graphics graphics;
+        private readonly SolidBrush brush;
+        private readonly Pen pen;
+        private readonly int size = 10;
+        private List<Point> points;
+        
         public Form1()
         {
             InitializeComponent();
