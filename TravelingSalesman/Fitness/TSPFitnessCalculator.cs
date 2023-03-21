@@ -3,7 +3,7 @@ using TravelingSalesman.Data;
 
 namespace TravelingSalesman.TSPFitness
 {
-    internal class TSPFitnessCalculator : IFitnessCalculator
+    public class TSPFitnessCalculator : IFitnessCalculator
     {
         public Graph UnderlyingGraph { get; }
         public TSPFitnessCalculator(Graph underlyingGraph)

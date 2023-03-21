@@ -17,5 +17,10 @@ namespace TravelingSalesman.Mutations
 
             return genomes.Take(split).Reverse().Concat(genomes.Skip(split).Reverse()).ToArray();
         }
+
+        public override string ToString()
+        {
+            return "Center Inverse";
+        }
     }
 }

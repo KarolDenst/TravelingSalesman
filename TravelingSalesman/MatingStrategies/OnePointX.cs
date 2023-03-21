@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class OnePointX : IMatingStrategy
+    public class OnePointX : IMatingStrategy
     {
         private readonly int[] canonicTour;
 

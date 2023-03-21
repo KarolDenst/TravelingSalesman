@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class PartiallyMappedX : IMatingStrategy
+    public class PartiallyMappedX : IMatingStrategy
     {
         private readonly Random rand;
 

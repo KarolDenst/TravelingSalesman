@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class CycleX : IMatingStrategy
+    public class CycleX : IMatingStrategy
     {
         public (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2)
         {

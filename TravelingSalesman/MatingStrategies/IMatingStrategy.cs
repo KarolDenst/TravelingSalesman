@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal interface IMatingStrategy
+    public interface IMatingStrategy
     {
         (Chromosome, Chromosome) ProduceOffspring(Chromosome parent1, Chromosome parent2);
         Chromosome ProduceSingleOffspring(Chromosome parent1, Chromosome parent2);

@@ -8,7 +8,7 @@ using TravelingSalesman.TSPFitness;
 
 namespace TravelingSalesman.Algorithms
 {
-    internal class GeneticAlgorithm
+    public class GeneticAlgorithm
     {
         private readonly Random rand;
         private readonly IMatingStrategy matingStrategy;
@@ -16,7 +16,7 @@ namespace TravelingSalesman.Algorithms
         private readonly Chromosome[] population;
         private readonly PopulationFactory populationFactory;
         private readonly ChromosomeSelector chromosomeSelector;
-        internal readonly IMutation mutation;
+        private readonly IMutation mutation;
 
         public string? LogPath { get; set; }
         public int LogLevel { get; set; } = 0;
@@ -107,7 +107,7 @@ namespace TravelingSalesman.Algorithms
             switch (LogLevel)
             {
                 case 0:
-                    var (chromosome, cycleLength) = GetLongestCycleChromosome();
+                    var (chromosome, cycleLength) = GetShortestCycleChromosome();
                     log.Append($"{iteration}: {chromosome} {cycleLength} {Environment.NewLine}");
 
                     break;
@@ -117,23 +117,21 @@ namespace TravelingSalesman.Algorithms
             }
         }
 
-        private (Chromosome, double) GetLongestCycleChromosome()
+        public (Chromosome, double) GetShortestCycleChromosome()
         {
-            double maxCycleLength = 0;
-            Chromosome maxCycleLengthChromosome;
+            double minCycleLength = double.MaxValue;
+            Chromosome minCycleLengthChromosome = population[0];
             foreach (var chromosome in population)
             {
                 double cycleLength = fitnessCalculator.UnderlyingGraph.GetCycleLength(chromosome.Genomes);
-                if (cycleLength > maxCycleLength)
+                if (cycleLength < minCycleLength)
                 {
-                    maxCycleLength = cycleLength;
-                    maxCycleLengthChromosome = chromosome;
+                    minCycleLength = cycleLength;
+                    minCycleLengthChromosome = chromosome;
                 }
             }
 
-            maxCycleLengthChromosome = population[^1];
-
-            return (maxCycleLengthChromosome, maxCycleLength);
+            return (minCycleLengthChromosome, minCycleLength);
         }
 
         public override string ToString()

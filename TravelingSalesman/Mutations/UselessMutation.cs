@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.Mutations
 {
-    internal class UselessMutation : IMutation
+    public class UselessMutation : IMutation
     {
         public Chromosome Mutate(Chromosome chromosome)
         {

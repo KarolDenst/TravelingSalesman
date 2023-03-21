@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.MatingStrategies
 {
-    internal class OrderX2 : IMatingStrategy
+    public class OrderX2 : IMatingStrategy
     {
         private readonly Random rand;
 
