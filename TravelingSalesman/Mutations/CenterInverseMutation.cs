@@ -20,7 +20,7 @@ namespace TravelingSalesman.Mutations
 
         public override string ToString()
         {
-            return "Center Inverse";
+            return "center inverse mutation";
         }
     }
 }

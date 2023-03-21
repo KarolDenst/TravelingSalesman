@@ -96,7 +96,7 @@ namespace TravelingSalesman
             return null;
         }
 
-        public static void PlotResults(string resultsPath, string title)
+        public static void PlotResults(string resultsDirPath)
         {
             string? pythonPath = ConfigurationManager.AppSettings.Get("python_path");
 
@@ -112,7 +112,7 @@ namespace TravelingSalesman
             ProcessStartInfo start = new()
             {
                 FileName = pythonPath!,
-                Arguments = string.Format("{0} {1} {2}", plotScriptPath, resultsPath, title),
+                Arguments = string.Format("{0} {1}", plotScriptPath, resultsDirPath),
                 UseShellExecute = false
             };
             Process.Start(start);
