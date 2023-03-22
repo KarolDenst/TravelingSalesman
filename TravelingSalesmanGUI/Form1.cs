@@ -1,21 +1,21 @@
-using TravelingSalesman.Mutations;
-using TravelingSalesman.Utils;
-using TravelingSalesman.MatingStrategies;
-using TravelingSalesman.Data;
-using TravelingSalesman.TSPFitness;
-using TravelingSalesman.Factories;
 using TravelingSalesman.Algorithms;
+using TravelingSalesman.Data;
+using TravelingSalesman.Factories;
+using TravelingSalesman.MatingStrategies;
+using TravelingSalesman.Mutations;
+using TravelingSalesman.TSPFitness;
+using TravelingSalesman.Utils;
 
 namespace TravelingSalesmanGUI
 {
     public partial class Form1 : Form
     {
-        private readonly Graphics graphics;
-        private readonly SolidBrush brush;
-        private readonly Pen pen;
-        private readonly int size = 10;
-        private List<Point> points;
-        
+        Graphics graphics;
+        List<Point> points;
+        SolidBrush brush;
+        Pen pen;
+        int size = 10;
+
         public Form1()
         {
             InitializeComponent();
@@ -84,7 +84,7 @@ namespace TravelingSalesmanGUI
             DrawLines(vertexes);
             DrawVertexes();
             canvas.Refresh();
-        }    
+        }
 
         private void runButton_Click(object sender, EventArgs e)
         {
@@ -101,7 +101,7 @@ namespace TravelingSalesmanGUI
             var matingProbability = (double)matingProbUpDown.Value;
             var mutationProbability = (double)mutationProbUpDown.Value;
 
-            GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize, 
+            GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize,
                 chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand);
 
             string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
