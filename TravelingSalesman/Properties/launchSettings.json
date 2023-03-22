@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TravelingSalesman": {
+      "commandName": "Project",
+      "commandLineArgs": "ch130"
+    }
+  }
+}
