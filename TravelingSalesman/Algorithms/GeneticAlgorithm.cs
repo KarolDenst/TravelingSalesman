@@ -21,6 +21,9 @@ namespace TravelingSalesman.Algorithms
         public string? LogPath { get; set; }
         public int LogLevel { get; set; } = 0;
 
+        public double ShortestCycleLength { private set; get; } = double.MaxValue;
+        public Chromosome ShortestCycleChromosome { private set; get; }
+
         private readonly StringBuilder log = new StringBuilder();
 
         public GeneticAlgorithm(int chromosomeLength, int populationSize,
@@ -35,13 +38,14 @@ namespace TravelingSalesman.Algorithms
             chromosomeSelector = new(fitnessCalculator, rand);
             this.mutation = mutation;
             this.rand = rand;
+            ShortestCycleChromosome = population[0];
         }
 
-        public void UpdatePopulation(double crossoverProbability, double mutationProbability)
+        public void UpdatePopulation(double crossoverProbability, double mutationProbability, double eliteSize)
         {
             Chromosome[] parents = new Chromosome[population.Length];
 
-            int eliteCount = population.Length / 4;
+            int eliteCount = (int)(population.Length * eliteSize);
             Chromosome[] elite = population.OrderByDescending(fitnessCalculator.CalculateFitness).Take(eliteCount).ToArray();
 
             for (int i = 0; i < parents.Length; i++)
@@ -68,15 +72,15 @@ namespace TravelingSalesman.Algorithms
                 }
             }
 
-            for(int i = 0; i < eliteCount; i++)
+            for (int i = 0; i < eliteCount; i++)
             {
                 population[i + population.Length - eliteCount] = elite[i];
             }
         }
 
-        public void Run(int maxIterations, double crossoverProbability, double mutationProbability)
+        public void Run(int maxIterations, double crossoverProbability, double mutationProbability, double eliteSize = 0.25)
         {
-            if(LogPath is not null)
+            if (LogPath is not null)
             {
                 AddLogTitle();
             }
@@ -86,11 +90,24 @@ namespace TravelingSalesman.Algorithms
                 if (LogPath is not null)
                     LogProgress(i);
 
-                UpdatePopulation(crossoverProbability, mutationProbability);
+                UpdatePopulation(crossoverProbability, mutationProbability, eliteSize);
+
+                var (chromosome, cycleLength) = GetShortestCycleChromosome();
+                if (cycleLength < ShortestCycleLength)
+                {
+                    ShortestCycleLength = cycleLength;
+                    ShortestCycleChromosome = chromosome;
+                }
             }
 
             if (LogPath is not null)
                 File.AppendAllText(LogPath!, log.ToString());
+
+            if (LogLevel >= 1)
+                Console.WriteLine($"Shortest cycle length: {ShortestCycleLength}");
+
+            if (LogLevel >= 2)
+                Console.WriteLine($"Shortest cycle: {ShortestCycleChromosome}");
         }
 
         public void RunDHMILC(double step)
@@ -102,6 +119,7 @@ namespace TravelingSalesman.Algorithms
 
             double crossoverProbability = 0;
             double mutationProbability = 1;
+            double eliteSize = 0.25;
             int i = 0;
 
             while (crossoverProbability <= 1 && mutationProbability >= 0)
@@ -109,7 +127,7 @@ namespace TravelingSalesman.Algorithms
                 if (LogPath is not null)
                     LogProgress(i);
 
-                UpdatePopulation(crossoverProbability, mutationProbability);
+                UpdatePopulation(crossoverProbability, mutationProbability, eliteSize);
 
                 crossoverProbability += step;
                 mutationProbability -= step;
@@ -122,22 +140,18 @@ namespace TravelingSalesman.Algorithms
 
         private void LogProgress(int iteration)
         {
-            switch (LogLevel)
+            if (LogLevel >= 0)
             {
-                case 0:
-                    var (chromosome, cycleLength) = GetShortestCycleChromosome();
-                    log.Append($"{iteration}: {chromosome} {cycleLength}{Environment.NewLine}");
-
-                    break;
-
-                default:
-                    break;
+                var (chromosome, cycleLength) = GetShortestCycleChromosome();
+                double averageCycleLength = population.Average(
+                    x => fitnessCalculator.UnderlyingGraph.GetCycleLength(x.Genomes));
+                log.Append($"it = {iteration}; genomes = {chromosome}; min = {cycleLength}; avg = {averageCycleLength};{Environment.NewLine}");
             }
         }
 
         private void AddLogTitle()
         {
-            log.Append($"{matingStrategy} and {mutation}{Environment.NewLine}");
+            log.Append($"{matingStrategy} with {mutation}{Environment.NewLine}");
         }
 
         public (Chromosome, double) GetShortestCycleChromosome()

@@ -1,4 +1,5 @@
-﻿using TravelingSalesman;
+﻿using System.Diagnostics;
+using TravelingSalesman;
 using TravelingSalesman.Algorithms;
 using TravelingSalesman.Data;
 using TravelingSalesman.Factories;
@@ -7,7 +8,6 @@ using TravelingSalesman.MatingStrategies;
 using TravelingSalesman.Mutations;
 using TravelingSalesman.TSPFitness;
 using TravelingSalesman.Utils;
-using System.Diagnostics;
 
 string cityName = "ch130";
 string resultsDir = @"../../../../Results/";
@@ -20,7 +20,7 @@ TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graph);
 
 IChromosomeFactory chromosomeFactory = new TSPChromosomeFactory(rand);
 
-IMatingStrategy[] matingStrategies = new IMatingStrategy[] { 
+IMatingStrategy[] matingStrategies = new IMatingStrategy[] {
     new CycleX(),
     new OnePointX(Enumerable.Range(0, graph.Length).ToArray(), rand),
     new OrderX(rand), new OrderX2(rand),
@@ -37,22 +37,22 @@ IMutation[] mutations = new IMutation[]
     new TworsMutation(rand)
 };
 
-foreach(var matingStrategy in matingStrategies)
+foreach (var matingStrategy in matingStrategies)
 {
     string logDir = Path.Combine(resultsDir, matingStrategy.ToString()!.Replace(' ', '-'));
 
-    if(!Directory.Exists(logDir))
+    if (!Directory.Exists(logDir))
         Directory.CreateDirectory(logDir);
     else
     {
         var dirInfo = new DirectoryInfo(logDir);
-        foreach(var file in dirInfo.GetFiles())
+        foreach (var file in dirInfo.GetFiles())
         {
             file.Delete();
         }
     }
 
-    foreach(var mutation in mutations)
+    foreach (var mutation in mutations)
     {
         GeneticAlgorithm algorithm = new(chromosomeLength: graph.Length,
             populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand);
@@ -64,10 +64,10 @@ foreach(var matingStrategy in matingStrategies)
         algorithm.LogPath = logPath;
 
         Stopwatch sw = Stopwatch.StartNew();
-        algorithm.Run(maxIterations: 200, crossoverProbability: 0.8, mutationProbability: 0.05);
+        algorithm.Run(maxIterations: 200, crossoverProbability: 0.8, mutationProbability: 0.05, eliteSize: 0.25);
         //algorithm.RunDHMILC(0.005);
         sw.Stop();
-        
+
         Console.WriteLine($"{matingStrategy} with {mutation}");
         Console.WriteLine($"Time elapsed: {sw.Elapsed.TotalMilliseconds} ms\n");
     }
