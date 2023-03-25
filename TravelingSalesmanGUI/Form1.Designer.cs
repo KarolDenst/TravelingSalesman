@@ -30,6 +30,8 @@
         {
             this.canvas = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.resultTextBox = new System.Windows.Forms.TextBox();
+            this.resetButton = new System.Windows.Forms.Button();
             this.mutationProbUpDown = new System.Windows.Forms.NumericUpDown();
             this.matingProbUpDown = new System.Windows.Forms.NumericUpDown();
             this.maxIterationUpDown = new System.Windows.Forms.NumericUpDown();
@@ -41,7 +43,6 @@
             this.runButton = new System.Windows.Forms.Button();
             this.mutationComboBox = new System.Windows.Forms.ComboBox();
             this.matingComboBox = new System.Windows.Forms.ComboBox();
-            this.resetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mutationProbUpDown)).BeginInit();
@@ -63,6 +64,7 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.resultTextBox);
             this.groupBox1.Controls.Add(this.resetButton);
             this.groupBox1.Controls.Add(this.mutationProbUpDown);
             this.groupBox1.Controls.Add(this.matingProbUpDown);
@@ -77,10 +79,30 @@
             this.groupBox1.Controls.Add(this.matingComboBox);
             this.groupBox1.Location = new System.Drawing.Point(804, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(216, 267);
+            this.groupBox1.Size = new System.Drawing.Size(216, 304);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Configuration";
+            // 
+            // resultTextBox
+            // 
+            this.resultTextBox.Enabled = false;
+            this.resultTextBox.Location = new System.Drawing.Point(6, 267);
+            this.resultTextBox.Name = "resultTextBox";
+            this.resultTextBox.Size = new System.Drawing.Size(198, 27);
+            this.resultTextBox.TabIndex = 12;
+            this.resultTextBox.Text = "Result:";
+            this.resultTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // resetButton
+            // 
+            this.resetButton.Location = new System.Drawing.Point(113, 232);
+            this.resetButton.Name = "resetButton";
+            this.resetButton.Size = new System.Drawing.Size(94, 29);
+            this.resetButton.TabIndex = 11;
+            this.resetButton.Text = "Reset";
+            this.resetButton.UseVisualStyleBackColor = true;
+            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // mutationProbUpDown
             // 
@@ -220,16 +242,6 @@
             this.matingComboBox.Size = new System.Drawing.Size(201, 28);
             this.matingComboBox.TabIndex = 0;
             // 
-            // resetButton
-            // 
-            this.resetButton.Location = new System.Drawing.Point(113, 232);
-            this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(94, 29);
-            this.resetButton.TabIndex = 11;
-            this.resetButton.Text = "Reset";
-            this.resetButton.UseVisualStyleBackColor = true;
-            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -266,5 +278,6 @@
         private TextBox textBox4;
         private TextBox textBox3;
         private Button resetButton;
+        private TextBox resultTextBox;
     }
 }

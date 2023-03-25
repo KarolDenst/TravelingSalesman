@@ -108,9 +108,11 @@ namespace TravelingSalesmanGUI
             algorithm.LogPath = logPath;
             algorithm.Run(maxIterations, matingProbability, mutationProbability);
 
-            int[] genomes = algorithm.GetShortestCycleChromosome().Item1.Genomes;
+            
+            (var genomes, double result) = algorithm.GetShortestCycleChromosome();
 
-            Draw(genomes);
+            Draw(genomes.Genomes);
+            resultTextBox.Text = $"Result: {(int)result}";
         }
 
         private void resetButton_Click(object sender, EventArgs e)
