@@ -1,3 +1,4 @@
+using TravelingSalesman;
 using TravelingSalesman.Algorithms;
 using TravelingSalesman.Data;
 using TravelingSalesman.Factories;
@@ -100,19 +101,21 @@ namespace TravelingSalesmanGUI
             var maxIterations = (int)maxIterationUpDown.Value;
             var matingProbability = (double)matingProbUpDown.Value;
             var mutationProbability = (double)mutationProbUpDown.Value;
+            string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
 
             GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize,
-                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand);
+                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, logPath);
 
-            string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
-            algorithm.LogPath = logPath;
-            algorithm.Run(maxIterations, matingProbability, mutationProbability);
+            for (int i = 0; i < maxIterations / 10; i++)
+            {
+                algorithm.Run(10, matingProbability, mutationProbability);
+                (var genomes, double result) = algorithm.GetShortestCycleChromosome();
 
-            
-            (var genomes, double result) = algorithm.GetShortestCycleChromosome();
+                Draw(genomes.Genomes);
+                resultTextBox.Text = $"Result: {(int)result}";
+            }
 
-            Draw(genomes.Genomes);
-            resultTextBox.Text = $"Result: {(int)result}";
+            if (plotCheckBox.Checked) Plotter.PlotSingleResult(Path.GetFullPath(logPath));
         }
 
         private void resetButton_Click(object sender, EventArgs e)

@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 namespace TravelingSalesman
 {
-    internal class Plotter
+    public class Plotter
     {
         [SupportedOSPlatform("windows")]
         private static string? GetPythonPath(string requiredVersion = "", string maxVersion = "")
@@ -113,6 +113,28 @@ namespace TravelingSalesman
             {
                 FileName = pythonPath!,
                 Arguments = string.Format("{0} {1}", plotScriptPath, resultsDirPath),
+                UseShellExecute = false
+            };
+            Process.Start(start);
+        }
+
+        public static void PlotSingleResult(string resultPath)
+        {
+            string? pythonPath = ConfigurationManager.AppSettings.Get("python_path");
+
+            if (string.IsNullOrEmpty(pythonPath) && OperatingSystem.IsWindows())
+            {
+                pythonPath = GetPythonPath();
+            }
+
+            if (pythonPath == null)
+                throw new Exception("Python not found!");
+
+            string plotScriptPath = @"../../../../Script/plot_single_result.py";
+            ProcessStartInfo start = new()
+            {
+                FileName = pythonPath!,
+                Arguments = string.Format("{0} {1}", plotScriptPath, resultPath),
                 UseShellExecute = false
             };
             Process.Start(start);
