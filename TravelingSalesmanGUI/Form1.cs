@@ -1,3 +1,4 @@
+using TravelingSalesman;
 using TravelingSalesman.Algorithms;
 using TravelingSalesman.Data;
 using TravelingSalesman.Factories;
@@ -10,15 +11,16 @@ namespace TravelingSalesmanGUI
 {
     public partial class Form1 : Form
     {
-        Graphics graphics;
+        readonly Graphics graphics;
         List<Point> points;
-        SolidBrush brush;
-        Pen pen;
-        int size = 10;
+        readonly SolidBrush brush;
+        readonly Pen pen;
+        readonly int size = 10;
 
         public Form1()
         {
             InitializeComponent();
+            Text = "Traveling Salesman";
             Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
             canvas.Image = bitmap;
             graphics = Graphics.FromImage(bitmap);
@@ -89,30 +91,48 @@ namespace TravelingSalesmanGUI
         private void runButton_Click(object sender, EventArgs e)
         {
             Graph graph = Utils.GetGraph(points.ToArray());
+            if(graph.Length == 0)
+            {
+                MessageBox.Show("Please draw a graph with at least one vertex", "error message");
+                return;
+            }
 
             Random rand = new Random();
 
             var chromosomeFactory = new TSPChromosomeFactory(rand);
-            var matingStrategy = (IMatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
-            var mutation = (IMutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
+
+            IMatingStrategy matingStrategy;
+            IMutation mutation;
+            try
+            {
+                matingStrategy = (IMatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
+                mutation = (IMutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
+            } 
+            catch(ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Please select muation and mating strategy", "error message");
+                return;
+            }
             var fitnessCalculator = new TSPFitnessCalculator(graph);
             var populationSize = (int)populationUpDown.Value;
             var maxIterations = (int)maxIterationUpDown.Value;
             var matingProbability = (double)matingProbUpDown.Value;
             var mutationProbability = (double)mutationProbUpDown.Value;
+            string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
 
             GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize,
-                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand);
+                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, logPath);
 
-            string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
-            algorithm.LogPath = logPath;
-            algorithm.Run(maxIterations, matingProbability, mutationProbability);
+            for (int i = 0; i < maxIterations / 10; i++)
+            {
+                algorithm.Run(10, matingProbability, mutationProbability);
+                (var genomes, double result) = algorithm.GetShortestCycleChromosome();
 
-            
-            (var genomes, double result) = algorithm.GetShortestCycleChromosome();
+                Draw(genomes.Genomes);
+                resultTextBox.Text = $"Result: {(int)result}";
+            }
 
-            Draw(genomes.Genomes);
-            resultTextBox.Text = $"Result: {(int)result}";
+            if (plotCheckBox.Checked) Plotter.PlotSingleResult(Path.GetFullPath(logPath));
         }
 
         private void resetButton_Click(object sender, EventArgs e)

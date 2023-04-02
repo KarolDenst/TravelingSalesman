@@ -28,238 +28,209 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.canvas = new System.Windows.Forms.PictureBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.resultTextBox = new System.Windows.Forms.TextBox();
-            this.resetButton = new System.Windows.Forms.Button();
-            this.mutationProbUpDown = new System.Windows.Forms.NumericUpDown();
-            this.matingProbUpDown = new System.Windows.Forms.NumericUpDown();
-            this.maxIterationUpDown = new System.Windows.Forms.NumericUpDown();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.populationUpDown = new System.Windows.Forms.NumericUpDown();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.runButton = new System.Windows.Forms.Button();
-            this.mutationComboBox = new System.Windows.Forms.ComboBox();
-            this.matingComboBox = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mutationProbUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.matingProbUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxIterationUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.populationUpDown)).BeginInit();
-            this.SuspendLayout();
+            canvas = new PictureBox();
+            groupBox1 = new GroupBox();
+            plotCheckBox = new CheckBox();
+            resultTextBox = new TextBox();
+            resetButton = new Button();
+            mutationProbUpDown = new NumericUpDown();
+            matingProbUpDown = new NumericUpDown();
+            maxIterationUpDown = new NumericUpDown();
+            textBox4 = new TextBox();
+            textBox3 = new TextBox();
+            textBox2 = new TextBox();
+            populationUpDown = new NumericUpDown();
+            textBox1 = new TextBox();
+            runButton = new Button();
+            mutationComboBox = new ComboBox();
+            matingComboBox = new ComboBox();
+            ((System.ComponentModel.ISupportInitialize)canvas).BeginInit();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)mutationProbUpDown).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)matingProbUpDown).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)maxIterationUpDown).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)populationUpDown).BeginInit();
+            SuspendLayout();
             // 
             // canvas
             // 
-            this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.canvas.Location = new System.Drawing.Point(0, 0);
-            this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1020, 568);
-            this.canvas.TabIndex = 0;
-            this.canvas.TabStop = false;
-            this.canvas.MouseClick += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseClick);
+            canvas.Dock = DockStyle.Fill;
+            canvas.Location = new Point(0, 0);
+            canvas.Name = "canvas";
+            canvas.Size = new Size(1020, 568);
+            canvas.TabIndex = 0;
+            canvas.TabStop = false;
+            canvas.MouseClick += canvas_MouseClick;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.resultTextBox);
-            this.groupBox1.Controls.Add(this.resetButton);
-            this.groupBox1.Controls.Add(this.mutationProbUpDown);
-            this.groupBox1.Controls.Add(this.matingProbUpDown);
-            this.groupBox1.Controls.Add(this.maxIterationUpDown);
-            this.groupBox1.Controls.Add(this.textBox4);
-            this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.populationUpDown);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.runButton);
-            this.groupBox1.Controls.Add(this.mutationComboBox);
-            this.groupBox1.Controls.Add(this.matingComboBox);
-            this.groupBox1.Location = new System.Drawing.Point(804, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(216, 304);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Configuration";
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox1.Controls.Add(plotCheckBox);
+            groupBox1.Controls.Add(resultTextBox);
+            groupBox1.Controls.Add(resetButton);
+            groupBox1.Controls.Add(mutationProbUpDown);
+            groupBox1.Controls.Add(matingProbUpDown);
+            groupBox1.Controls.Add(maxIterationUpDown);
+            groupBox1.Controls.Add(textBox4);
+            groupBox1.Controls.Add(textBox3);
+            groupBox1.Controls.Add(textBox2);
+            groupBox1.Controls.Add(populationUpDown);
+            groupBox1.Controls.Add(textBox1);
+            groupBox1.Controls.Add(runButton);
+            groupBox1.Controls.Add(mutationComboBox);
+            groupBox1.Controls.Add(matingComboBox);
+            groupBox1.Location = new Point(804, 0);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(216, 305);
+            groupBox1.TabIndex = 2;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Configuration";
+            // 
+            // plotCheckBox
+            // 
+            plotCheckBox.AutoSize = true;
+            plotCheckBox.Location = new Point(6, 269);
+            plotCheckBox.Name = "plotCheckBox";
+            plotCheckBox.Size = new Size(57, 24);
+            plotCheckBox.TabIndex = 13;
+            plotCheckBox.Text = "Plot";
+            plotCheckBox.UseVisualStyleBackColor = true;
             // 
             // resultTextBox
             // 
-            this.resultTextBox.Enabled = false;
-            this.resultTextBox.Location = new System.Drawing.Point(6, 267);
-            this.resultTextBox.Name = "resultTextBox";
-            this.resultTextBox.Size = new System.Drawing.Size(198, 27);
-            this.resultTextBox.TabIndex = 12;
-            this.resultTextBox.Text = "Result:";
-            this.resultTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            resultTextBox.Enabled = false;
+            resultTextBox.Location = new Point(69, 267);
+            resultTextBox.Name = "resultTextBox";
+            resultTextBox.Size = new Size(135, 27);
+            resultTextBox.TabIndex = 12;
+            resultTextBox.Text = "Result:";
+            resultTextBox.TextAlign = HorizontalAlignment.Center;
             // 
             // resetButton
             // 
-            this.resetButton.Location = new System.Drawing.Point(113, 232);
-            this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(94, 29);
-            this.resetButton.TabIndex = 11;
-            this.resetButton.Text = "Reset";
-            this.resetButton.UseVisualStyleBackColor = true;
-            this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
+            resetButton.Location = new Point(113, 232);
+            resetButton.Name = "resetButton";
+            resetButton.Size = new Size(94, 29);
+            resetButton.TabIndex = 11;
+            resetButton.Text = "Reset";
+            resetButton.UseVisualStyleBackColor = true;
+            resetButton.Click += resetButton_Click;
             // 
             // mutationProbUpDown
             // 
-            this.mutationProbUpDown.DecimalPlaces = 2;
-            this.mutationProbUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.mutationProbUpDown.Location = new System.Drawing.Point(138, 199);
-            this.mutationProbUpDown.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.mutationProbUpDown.Name = "mutationProbUpDown";
-            this.mutationProbUpDown.Size = new System.Drawing.Size(69, 27);
-            this.mutationProbUpDown.TabIndex = 10;
-            this.mutationProbUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
+            mutationProbUpDown.DecimalPlaces = 2;
+            mutationProbUpDown.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            mutationProbUpDown.Location = new Point(138, 199);
+            mutationProbUpDown.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            mutationProbUpDown.Name = "mutationProbUpDown";
+            mutationProbUpDown.Size = new Size(69, 27);
+            mutationProbUpDown.TabIndex = 10;
+            mutationProbUpDown.Value = new decimal(new int[] { 1, 0, 0, 65536 });
             // 
             // matingProbUpDown
             // 
-            this.matingProbUpDown.DecimalPlaces = 2;
-            this.matingProbUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.matingProbUpDown.Location = new System.Drawing.Point(138, 166);
-            this.matingProbUpDown.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.matingProbUpDown.Name = "matingProbUpDown";
-            this.matingProbUpDown.Size = new System.Drawing.Size(69, 27);
-            this.matingProbUpDown.TabIndex = 9;
-            this.matingProbUpDown.Value = new decimal(new int[] {
-            8,
-            0,
-            0,
-            65536});
+            matingProbUpDown.DecimalPlaces = 2;
+            matingProbUpDown.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            matingProbUpDown.Location = new Point(138, 166);
+            matingProbUpDown.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            matingProbUpDown.Name = "matingProbUpDown";
+            matingProbUpDown.Size = new Size(69, 27);
+            matingProbUpDown.TabIndex = 9;
+            matingProbUpDown.Value = new decimal(new int[] { 8, 0, 0, 65536 });
             // 
             // maxIterationUpDown
             // 
-            this.maxIterationUpDown.Location = new System.Drawing.Point(138, 133);
-            this.maxIterationUpDown.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.maxIterationUpDown.Name = "maxIterationUpDown";
-            this.maxIterationUpDown.Size = new System.Drawing.Size(69, 27);
-            this.maxIterationUpDown.TabIndex = 8;
-            this.maxIterationUpDown.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
+            maxIterationUpDown.Location = new Point(138, 133);
+            maxIterationUpDown.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            maxIterationUpDown.Name = "maxIterationUpDown";
+            maxIterationUpDown.Size = new Size(69, 27);
+            maxIterationUpDown.TabIndex = 8;
+            maxIterationUpDown.Value = new decimal(new int[] { 500, 0, 0, 0 });
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(6, 199);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(125, 27);
-            this.textBox4.TabIndex = 7;
-            this.textBox4.Text = "Mutation Prob";
+            textBox4.Location = new Point(6, 199);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(125, 27);
+            textBox4.TabIndex = 7;
+            textBox4.Text = "Mutation Prob";
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(6, 166);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(125, 27);
-            this.textBox3.TabIndex = 6;
-            this.textBox3.Text = "Mating Prob";
+            textBox3.Location = new Point(6, 166);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(125, 27);
+            textBox3.TabIndex = 6;
+            textBox3.Text = "Mating Prob";
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 133);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(125, 27);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.Text = "Max Iterations";
+            textBox2.Location = new Point(6, 133);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(125, 27);
+            textBox2.TabIndex = 5;
+            textBox2.Text = "Max Iterations";
             // 
             // populationUpDown
             // 
-            this.populationUpDown.Location = new System.Drawing.Point(138, 100);
-            this.populationUpDown.Maximum = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.populationUpDown.Name = "populationUpDown";
-            this.populationUpDown.Size = new System.Drawing.Size(69, 27);
-            this.populationUpDown.TabIndex = 4;
-            this.populationUpDown.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
+            populationUpDown.Location = new Point(138, 100);
+            populationUpDown.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            populationUpDown.Name = "populationUpDown";
+            populationUpDown.Size = new Size(69, 27);
+            populationUpDown.TabIndex = 4;
+            populationUpDown.Value = new decimal(new int[] { 50, 0, 0, 0 });
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 100);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(125, 27);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.Text = "Population Size";
+            textBox1.Location = new Point(6, 100);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(125, 27);
+            textBox1.TabIndex = 3;
+            textBox1.Text = "Population Size";
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(6, 232);
-            this.runButton.Name = "runButton";
-            this.runButton.Size = new System.Drawing.Size(94, 29);
-            this.runButton.TabIndex = 2;
-            this.runButton.Text = "Run";
-            this.runButton.UseVisualStyleBackColor = true;
-            this.runButton.Click += new System.EventHandler(this.runButton_Click);
+            runButton.Location = new Point(6, 232);
+            runButton.Name = "runButton";
+            runButton.Size = new Size(94, 29);
+            runButton.TabIndex = 2;
+            runButton.Text = "Run";
+            runButton.UseVisualStyleBackColor = true;
+            runButton.Click += runButton_Click;
             // 
             // mutationComboBox
             // 
-            this.mutationComboBox.FormattingEnabled = true;
-            this.mutationComboBox.Location = new System.Drawing.Point(6, 65);
-            this.mutationComboBox.Name = "mutationComboBox";
-            this.mutationComboBox.Size = new System.Drawing.Size(201, 28);
-            this.mutationComboBox.TabIndex = 1;
+            mutationComboBox.FormattingEnabled = true;
+            mutationComboBox.Location = new Point(6, 65);
+            mutationComboBox.Name = "mutationComboBox";
+            mutationComboBox.Size = new Size(201, 28);
+            mutationComboBox.TabIndex = 1;
             // 
             // matingComboBox
             // 
-            this.matingComboBox.FormattingEnabled = true;
-            this.matingComboBox.Location = new System.Drawing.Point(6, 31);
-            this.matingComboBox.Name = "matingComboBox";
-            this.matingComboBox.Size = new System.Drawing.Size(201, 28);
-            this.matingComboBox.TabIndex = 0;
+            matingComboBox.FormattingEnabled = true;
+            matingComboBox.Location = new Point(6, 31);
+            matingComboBox.Name = "matingComboBox";
+            matingComboBox.Size = new Size(201, 28);
+            matingComboBox.TabIndex = 0;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1020, 568);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.canvas);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mutationProbUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.matingProbUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxIterationUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.populationUpDown)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1020, 568);
+            Controls.Add(groupBox1);
+            Controls.Add(canvas);
+            Name = "Form1";
+            Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)canvas).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)mutationProbUpDown).EndInit();
+            ((System.ComponentModel.ISupportInitialize)matingProbUpDown).EndInit();
+            ((System.ComponentModel.ISupportInitialize)maxIterationUpDown).EndInit();
+            ((System.ComponentModel.ISupportInitialize)populationUpDown).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -279,5 +250,6 @@
         private TextBox textBox3;
         private Button resetButton;
         private TextBox resultTextBox;
+        private CheckBox plotCheckBox;
     }
 }

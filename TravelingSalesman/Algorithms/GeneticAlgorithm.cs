@@ -17,8 +17,9 @@ namespace TravelingSalesman.Algorithms
         private readonly PopulationFactory populationFactory;
         private readonly ChromosomeSelector chromosomeSelector;
         private readonly IMutation mutation;
+        private string? logPath;
+        private int iterations = 0;
 
-        public string? LogPath { get; set; }
         public int LogLevel { get; set; } = 0;
 
         public double ShortestCycleLength { private set; get; } = double.MaxValue;
@@ -29,7 +30,7 @@ namespace TravelingSalesman.Algorithms
         public GeneticAlgorithm(int chromosomeLength, int populationSize,
             IChromosomeFactory factory, IMatingStrategy matingStrategy,
             IMutation mutation, TSPFitnessCalculator fitnessCalculator,
-            Random rand)
+            Random rand, string? logPath = null)
         {
             populationFactory = new(factory);
             population = populationFactory.CreatePopulation(populationSize, chromosomeLength);
@@ -39,6 +40,12 @@ namespace TravelingSalesman.Algorithms
             this.mutation = mutation;
             this.rand = rand;
             ShortestCycleChromosome = population[0];
+            this.logPath = logPath;
+
+            if (this.logPath is not null)
+            {
+                AddLogTitle();
+            }
         }
 
         public void UpdatePopulation(double crossoverProbability, double mutationProbability, double eliteSize)
@@ -80,15 +87,10 @@ namespace TravelingSalesman.Algorithms
 
         public void Run(int maxIterations, double crossoverProbability, double mutationProbability, double eliteSize = 0.25)
         {
-            if (LogPath is not null)
-            {
-                AddLogTitle();
-            }
-
             for (int i = 0; i < maxIterations; i++)
             {
-                if (LogPath is not null)
-                    LogProgress(i);
+                if (logPath is not null)
+                    LogProgress(iterations + i);
 
                 UpdatePopulation(crossoverProbability, mutationProbability, eliteSize);
 
@@ -100,8 +102,13 @@ namespace TravelingSalesman.Algorithms
                 }
             }
 
-            if (LogPath is not null)
-                File.AppendAllText(LogPath!, log.ToString());
+            iterations += maxIterations;
+
+            if (logPath is not null)
+            {
+                File.AppendAllText(logPath!, log.ToString());
+                log.Clear();
+            }
 
             if (LogLevel >= 1)
                 Console.WriteLine($"Shortest cycle length: {ShortestCycleLength}");
@@ -112,11 +119,6 @@ namespace TravelingSalesman.Algorithms
 
         public void RunDHMILC(double step)
         {
-            if (LogPath is not null)
-            {
-                AddLogTitle();
-            }
-
             double crossoverProbability = 0;
             double mutationProbability = 1;
             double eliteSize = 0.25;
@@ -124,7 +126,7 @@ namespace TravelingSalesman.Algorithms
 
             while (crossoverProbability <= 1 && mutationProbability >= 0)
             {
-                if (LogPath is not null)
+                if (logPath is not null)
                     LogProgress(i);
 
                 UpdatePopulation(crossoverProbability, mutationProbability, eliteSize);
@@ -134,8 +136,8 @@ namespace TravelingSalesman.Algorithms
                 i++;
             }
 
-            if (LogPath is not null)
-                File.AppendAllText(LogPath!, log.ToString());
+            if (logPath is not null)
+                File.AppendAllText(logPath!, log.ToString());
         }
 
         private void LogProgress(int iteration)

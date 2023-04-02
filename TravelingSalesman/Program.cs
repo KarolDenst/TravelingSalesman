@@ -63,14 +63,12 @@ namespace TravelingSalesman
 
                 foreach (var mutation in mutations)
                 {
-                    GeneticAlgorithm algorithm = new(chromosomeLength: graph.Length,
-                        populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand);
-
                     string id = matingStrategy.ToString()!.Replace(' ', '-') + "-" + mutation.ToString()!.Replace(' ', '-');
                     string logPath = Path.Combine(logDir, cityName + "-" + id + ".txt");
                     File.WriteAllText(logPath, string.Empty);
 
-                    algorithm.LogPath = logPath;
+                    GeneticAlgorithm algorithm = new(chromosomeLength: graph.Length,
+                        populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, logPath);
 
                     Stopwatch sw = Stopwatch.StartNew();
                     algorithm.Run(maxIterations: 200, crossoverProbability: 0.8, mutationProbability: 0.05, eliteSize: 0.25);
