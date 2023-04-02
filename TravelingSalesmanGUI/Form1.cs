@@ -11,15 +11,16 @@ namespace TravelingSalesmanGUI
 {
     public partial class Form1 : Form
     {
-        Graphics graphics;
+        readonly Graphics graphics;
         List<Point> points;
-        SolidBrush brush;
-        Pen pen;
-        int size = 10;
+        readonly SolidBrush brush;
+        readonly Pen pen;
+        readonly int size = 10;
 
         public Form1()
         {
             InitializeComponent();
+            Text = "Traveling Salesman";
             Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
             canvas.Image = bitmap;
             graphics = Graphics.FromImage(bitmap);
@@ -90,12 +91,28 @@ namespace TravelingSalesmanGUI
         private void runButton_Click(object sender, EventArgs e)
         {
             Graph graph = Utils.GetGraph(points.ToArray());
+            if(graph.Length == 0)
+            {
+                MessageBox.Show("Please draw a graph with at least one vertex", "error message");
+                return;
+            }
 
             Random rand = new Random();
 
             var chromosomeFactory = new TSPChromosomeFactory(rand);
-            var matingStrategy = (IMatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
-            var mutation = (IMutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
+
+            IMatingStrategy matingStrategy;
+            IMutation mutation;
+            try
+            {
+                matingStrategy = (IMatingStrategy)matingComboBox.Items[matingComboBox.SelectedIndex];
+                mutation = (IMutation)mutationComboBox.Items[mutationComboBox.SelectedIndex];
+            } 
+            catch(ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Please select muation and mating strategy", "error message");
+                return;
+            }
             var fitnessCalculator = new TSPFitnessCalculator(graph);
             var populationSize = (int)populationUpDown.Value;
             var maxIterations = (int)maxIterationUpDown.Value;

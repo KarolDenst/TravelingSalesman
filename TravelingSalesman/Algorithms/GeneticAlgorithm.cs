@@ -17,7 +17,7 @@ namespace TravelingSalesman.Algorithms
         private readonly PopulationFactory populationFactory;
         private readonly ChromosomeSelector chromosomeSelector;
         private readonly IMutation mutation;
-        private string? LogPath;
+        private string? logPath;
         private int iterations = 0;
 
         public int LogLevel { get; set; } = 0;
@@ -40,9 +40,9 @@ namespace TravelingSalesman.Algorithms
             this.mutation = mutation;
             this.rand = rand;
             ShortestCycleChromosome = population[0];
-            LogPath = logPath;
+            this.logPath = logPath;
 
-            if (LogPath is not null)
+            if (this.logPath is not null)
             {
                 AddLogTitle();
             }
@@ -89,7 +89,7 @@ namespace TravelingSalesman.Algorithms
         {
             for (int i = 0; i < maxIterations; i++)
             {
-                if (LogPath is not null)
+                if (logPath is not null)
                     LogProgress(iterations + i);
 
                 UpdatePopulation(crossoverProbability, mutationProbability, eliteSize);
@@ -104,9 +104,9 @@ namespace TravelingSalesman.Algorithms
 
             iterations += maxIterations;
 
-            if (LogPath is not null)
+            if (logPath is not null)
             {
-                File.AppendAllText(LogPath!, log.ToString());
+                File.AppendAllText(logPath!, log.ToString());
                 log.Clear();
             }
 
@@ -126,7 +126,7 @@ namespace TravelingSalesman.Algorithms
 
             while (crossoverProbability <= 1 && mutationProbability >= 0)
             {
-                if (LogPath is not null)
+                if (logPath is not null)
                     LogProgress(i);
 
                 UpdatePopulation(crossoverProbability, mutationProbability, eliteSize);
@@ -136,8 +136,8 @@ namespace TravelingSalesman.Algorithms
                 i++;
             }
 
-            if (LogPath is not null)
-                File.AppendAllText(LogPath!, log.ToString());
+            if (logPath is not null)
+                File.AppendAllText(logPath!, log.ToString());
         }
 
         private void LogProgress(int iteration)
