@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace TravelingSalesman;
+namespace TravelingSalesman.Data;
 
 [XmlRoot("travellingSalesmanProblemInstance")]
 public class City

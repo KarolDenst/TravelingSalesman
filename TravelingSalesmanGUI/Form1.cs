@@ -39,6 +39,7 @@ namespace TravelingSalesmanGUI
         {
             mutationComboBox.Items.Add(new CenterInverseMutation(rand));
             mutationComboBox.Items.Add(new ReverseSequenceMutation(rand));
+            mutationComboBox.Items.Add(new PartialShuffleMutation(new KnuthArrayShuffler(rand), rand));
             mutationComboBox.Items.Add(new ThorasMutation(rand));
             mutationComboBox.Items.Add(new ThorosMutation(new KnuthArrayShuffler(rand)));
             mutationComboBox.Items.Add(new TworsMutation(rand));
@@ -121,7 +122,7 @@ namespace TravelingSalesmanGUI
             string logPath = Path.Combine(@"../../../../Results/", DateTime.Now.Ticks.ToString() + ".txt");
 
             GeneticAlgorithm algorithm = new GeneticAlgorithm(graph.Length, populationSize,
-                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, logPath);
+                chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, logPath: logPath);
 
             for (int i = 0; i < maxIterations / 10; i++)
             {

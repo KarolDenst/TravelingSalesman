@@ -29,7 +29,8 @@ def plot_full_batch23(batch):
                                     label='best chromosome', c='tab:orange')
         axs[int(i / 3), i % 3].plot(iterations, avg_cycle_legnths,
                                     label='population average', c='tab:blue')
-        axs[int(i / 3), i % 3].set_title(lines[0])
+        title = '\n'.join(lines[0].split('&'))
+        axs[int(i / 3), i % 3].set_title(title)
         axs[int(i / 3), i % 3].legend(loc='upper right')
 
     for ax in axs.flat:
