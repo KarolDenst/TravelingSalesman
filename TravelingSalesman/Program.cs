@@ -22,6 +22,7 @@ namespace TravelingSalesman
             double cityMinCycle = cityMins[cityId];
 
             string resultsDir = @"../../../../Results/";
+            string reportDir = @"../../../../Results/Report/";
 
             City city = new City(Path.Combine(@"../../../../Cities/", cityName + ".xml"));
             Graph graph = new Graph(city);
@@ -49,6 +50,9 @@ namespace TravelingSalesman
                 new PartialShuffleMutation(new KnuthArrayShuffler(rand), rand)
             };
 
+            if (!Directory.Exists(reportDir))
+                Directory.CreateDirectory(reportDir);
+
             foreach (var matingStrategy in matingStrategies)
             {
                 string logDir = Path.Combine(resultsDir, matingStrategy.ToString()!.Replace(' ', '-'));
@@ -66,18 +70,21 @@ namespace TravelingSalesman
 
                 foreach (var mutation in mutations)
                 {
+                    int maxIterations = 15000;
                     string id = matingStrategy.ToString()!.Replace(' ', '-') + "-" + mutation.ToString()!.Replace(' ', '-');
                     string logPath = Path.Combine(logDir, cityName + "-" + id + ".txt");
+                    string reportPath = Path.Combine(reportDir, cityName + "-" + maxIterations + ".txt");
                     File.WriteAllText(logPath, string.Empty);
 
                     GeneticAlgorithm algorithm = new(chromosomeLength: graph.Length,
-                        populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, cityMinCycle, logPath)
+                        populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, cityMinCycle, logPath, reportPath)
                     {
                         LogLevel = 1
                     };
 
                     Stopwatch sw = Stopwatch.StartNew();
-                    algorithm.RunUntilOptimum(maxIterations: 5000, crossoverProbability: 0.8, mutationProbability: 0.2, eliteSize: 0.25, tolerance: 0.1);
+                    
+                    int iterations = algorithm.RunUntilOptimum(maxIterations: maxIterations, crossoverProbability: 0.8, mutationProbability: 0.15, eliteSize: 0.25, tolerance: 0.1);
 
                     sw.Stop();
 

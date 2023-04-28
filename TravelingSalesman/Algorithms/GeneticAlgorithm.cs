@@ -19,6 +19,7 @@ namespace TravelingSalesman.Algorithms
         private readonly ChromosomeSelector chromosomeSelector;
         private readonly IMutation mutation;
         private readonly string? logPath;
+        private readonly string? reportPath;
         private readonly double? expectedShortestCycleLength;
 
         private int iterations = 0;
@@ -33,7 +34,8 @@ namespace TravelingSalesman.Algorithms
         public GeneticAlgorithm(int chromosomeLength, int populationSize,
             IChromosomeFactory factory, IMatingStrategy matingStrategy,
             IMutation mutation, TSPFitnessCalculator fitnessCalculator,
-            Random rand, double? expectedShortestCycleLength = null, string? logPath = null)
+            Random rand, double? expectedShortestCycleLength = null,
+            string? logPath = null, string? reportPath = null)
         {
             populationFactory = new(factory);
             population = populationFactory.CreatePopulation(populationSize, chromosomeLength);
@@ -45,6 +47,7 @@ namespace TravelingSalesman.Algorithms
             ShortestCycleChromosome = population[0];
             this.expectedShortestCycleLength = expectedShortestCycleLength;
             this.logPath = logPath;
+            this.reportPath = reportPath;
 
             if (this.logPath is not null)
             {
@@ -168,6 +171,9 @@ namespace TravelingSalesman.Algorithms
                     else Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Difference: {string.Format("{0:0.00}", score * 100)}%");
                     Console.ResetColor();
+
+                    if(reportPath is not null)
+                        File.AppendAllText(reportPath!, $"{matingStrategy}, {mutation}, {string.Format("{0:0.00}", score * 100)}%\n");
                 }
                 Console.WriteLine($"Iterations ran: {i}");
             }
