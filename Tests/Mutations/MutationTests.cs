@@ -58,6 +58,17 @@ namespace Tests.Mutations
             };
         }
 
+        public static IEnumerable<object[]> TestDataPartialShuffle()
+        {
+            yield return new object[]
+            {
+                new int[] {1, 3, 2, 4, 5, 6 },
+                new int[] {1, 2, 3, 4, 5, 6 },
+                new int[] {3, 2, 4},
+                1, 4
+            };
+        }
+
         [Theory]
         [MemberData(nameof(TestDataCIM))]
         public void TestCenterInverseMutation(int[] expected, int[] chromosome, int split)
@@ -123,6 +134,26 @@ namespace Tests.Mutations
                 .Returns(p2);
 
             var subject = new TworsMutation(mockRandom.Object);
+
+            var actual = subject.Mutate(chromosome);
+            Assert.Equal(expected, actual.Genomes);
+        }
+
+        [Theory]
+        [MemberData(nameof(TestDataPartialShuffle))]
+        public void TestPartialShuffleMutation(int[] expected, int[] chromosome, int[] shuffledRange, int i, int j)
+        {
+            Mock<Random> mockRandom = new Mock<Random>();
+            mockRandom.SetupSequence(rand => rand.Next(chromosome.Length))
+                .Returns(i)
+                .Returns(j);
+
+            Mock<IArrayShuffler> mockArrayShuffler = new Mock<IArrayShuffler>();
+            int[] range = chromosome.Skip(i).Take(j - i).ToArray();
+            mockArrayShuffler.Setup(shuffler => shuffler.Shuffle(range))
+                .Returns(shuffledRange);
+
+            var subject = new PartialShuffleMutation(mockArrayShuffler.Object, mockRandom.Object);
 
             var actual = subject.Mutate(chromosome);
             Assert.Equal(expected, actual.Genomes);

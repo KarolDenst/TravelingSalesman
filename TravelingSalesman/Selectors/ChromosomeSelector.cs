@@ -1,7 +1,7 @@
 ﻿using TravelingSalesman.Chromosomes;
 using TravelingSalesman.TSPFitness;
 
-namespace TravelingSalesman
+namespace TravelingSalesman.Selectors
 {
     public class ChromosomeSelector
     {

@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import sys
 import re
 
+
 def plot_full_batch23(path):
     with open(path, 'r') as file:
         lines = [line.rstrip() for line in file]
@@ -22,10 +23,11 @@ def plot_full_batch23(path):
                     pass
 
     plt.plot(iterations, min_cycle_lengths,
-                                label='best chromosome', c='tab:orange')
+             label='best chromosome', c='tab:orange')
     plt.plot(iterations, avg_cycle_legnths,
-                                label='population average', c='tab:blue')
-    plt.title(lines[0])
+             label='population average', c='tab:blue')
+    title = '\n'.join(lines[0].split('&'))
+    plt.title(title)
     plt.legend(loc='upper right')
 
 

@@ -12,19 +12,21 @@ namespace TravelingSalesman
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            string cityName;
-            if (args.Length != 0)
-                cityName = args[0]; // br17 ch130 fl417
-            else
-                cityName = "ch130";
+            string[] cityNames = { "br17", "bayg29", "ch130", "fl417" };
+            double[] cityMins = { 39, 1610, 6110, 11861 };
+
+            int cityId = 1;
+            string cityName = cityNames[cityId];
+            double cityMinCycle = cityMins[cityId];
 
             string resultsDir = @"../../../../Results/";
 
             City city = new City(Path.Combine(@"../../../../Cities/", cityName + ".xml"));
             Graph graph = new Graph(city);
             Random rand = new Random(0);
+            
 
             TSPFitnessCalculator fitnessCalculator = new TSPFitnessCalculator(graph);
 
@@ -33,17 +35,18 @@ namespace TravelingSalesman
             IMatingStrategy[] matingStrategies = new IMatingStrategy[] {
                 new CycleX(),
                 new OnePointX(Enumerable.Range(0, graph.Length).ToArray(), rand),
-                new OrderX(rand), new OrderX2(rand),
+                new OrderX(rand),
+                new OrderX2(rand),
                 new PartiallyMappedX(rand)
             };
-
 
             IMutation[] mutations = new IMutation[] {
                 new CenterInverseMutation(rand),
                 new ReverseSequenceMutation(rand),
                 new ThorasMutation(rand),
                 new ThorosMutation(new KnuthArrayShuffler(rand)),
-                new TworsMutation(rand)
+                new TworsMutation(rand),
+                new PartialShuffleMutation(new KnuthArrayShuffler(rand), rand)
             };
 
             foreach (var matingStrategy in matingStrategies)
@@ -68,18 +71,21 @@ namespace TravelingSalesman
                     File.WriteAllText(logPath, string.Empty);
 
                     GeneticAlgorithm algorithm = new(chromosomeLength: graph.Length,
-                        populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, logPath);
+                        populationSize: 10, chromosomeFactory, matingStrategy, mutation, fitnessCalculator, rand, cityMinCycle, logPath)
+                    {
+                        LogLevel = 1
+                    };
 
                     Stopwatch sw = Stopwatch.StartNew();
-                    algorithm.Run(maxIterations: 200, crossoverProbability: 0.8, mutationProbability: 0.05, eliteSize: 0.25);
-                    //algorithm.RunDHMILC(0.005);
+                    algorithm.RunUntilOptimum(maxIterations: 5000, crossoverProbability: 0.8, mutationProbability: 0.2, eliteSize: 0.25, tolerance: 0.1);
+
                     sw.Stop();
 
                     Console.WriteLine($"{matingStrategy} with {mutation}");
                     Console.WriteLine($"Time elapsed: {sw.Elapsed.TotalMilliseconds} ms\n");
                 }
 
-                Plotter.PlotResults(logDir);
+                Plotter.PlotResults(resultsDirPath: logDir);
             }
 
             Console.WriteLine($"The results can be found in {Path.GetFullPath(resultsDir)}");
